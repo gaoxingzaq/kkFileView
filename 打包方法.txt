@@ -1,0 +1,2 @@
+cd file-online-preview
+mvn clean package -DskipTests -Prelease
