@@ -17,6 +17,8 @@
 
 2. 由于放弃了windows下集成LibreOffice 故而默认启用POI转换模式  开启OpenOffice 或者 LibreOffice 许修改配置文件o ffile home 路径 并选择 office.officexh = 1
 
+3. 具体接入方法: https://gitee.com/gaoxingzaq/file-online-preview-master/blob/master/server/src/main/bin/接入说明.md
+
 3. 错误解决办法: https://gitee.com/gaoxingzaq/file-online-preview-master/blob/master/server/src/main/bin/KK错误汇总及修复方法.docx
 
 4. 其他功能选项: https://gitee.com/gaoxingzaq/file-online-preview-master/blob/master/server/src/main/config/application.properties
