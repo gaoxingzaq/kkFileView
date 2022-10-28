@@ -18,6 +18,10 @@ DIV.black A:active{BORDER-RIGHT:#f0f0f0 1px solid;BORDER-TOP:#f0f0f0 1px solid;B
 line-height：30px；
 font-family：“SimHei”；
 text-indent:2em;padding-bottom:10px;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word;background-color:#000}
+input{
+color:#ffffff;
+background-color:#000000
+}
     </style>
 	<div class="container">
     <div class="panel panel-default">
