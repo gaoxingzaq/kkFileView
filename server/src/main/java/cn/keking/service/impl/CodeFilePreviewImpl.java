@@ -63,7 +63,13 @@ public class CodeFilePreviewImpl implements FilePreview {
                 }
                 String  fileData = HtmlUtils.htmlEscape(SimTextFilePreviewImpl.textData(outFilePath));
                 model.addAttribute("textData", Base64.encodeBase64String(fileData.getBytes()));
-                return CODE_FILE_PREVIEW_PAGE;
+                long size = filee.length() / 1024;
+                if (size >2048){
+                    System.out.println("文件大小1：" + size + "kb");
+                    return TXT_FILE_PREVIEW_PAGE;
+                }else {
+                    return CODE_FILE_PREVIEW_PAGE;
+                }
             } catch (IOException e) {
                 return otherFilePreview.notSupportedFile(model, fileAttribute, e.getLocalizedMessage());
             }
@@ -75,7 +81,13 @@ public class CodeFilePreviewImpl implements FilePreview {
             }
             String  fileData = HtmlUtils.htmlEscape(SimTextFilePreviewImpl.textData(outFilePath));
             model.addAttribute("textData", Base64.encodeBase64String(fileData.getBytes()));
-            return CODE_FILE_PREVIEW_PAGE;
+            long size = filee.length() / 1024;
+            if (size >2048){
+                System.out.println("文件大小1：" + size + "kb");
+                return TXT_FILE_PREVIEW_PAGE;
+            }else {
+                return CODE_FILE_PREVIEW_PAGE;
+            }
         } catch (IOException e) {
             return otherFilePreview.notSupportedFile(model, fileAttribute, e.getLocalizedMessage());
         }

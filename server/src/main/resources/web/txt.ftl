@@ -8,46 +8,16 @@
 </head>
 <body>
 <input hidden id="textData" value="${textData}"/>
-<#if "${file.suffix?html}" == "txt" || "${file.suffix?html}" == "log"  || "${file.suffix?html}" == "TXT"  || "${file.suffix?html}" == "LOG">
+
   <style type="text/css">
-DIV.black { 
- line-height:25px;
-PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 100%;
-  MARGIN: 1px; COLOR: #fff; 
- BACKGROUND-COLOR: #000; TEXT-ALIGN: left ;
-} 
-DIV.black A { 
-BORDER-RIGHT: #909090 1px solid; PADDING-RIGHT: 5px; 
-BACKGROUND-POSITION: 50% bottom; BORDER-TOP: #909090 1px solid;
- PADDING-LEFT: 5px; BACKGROUND-IMAGE: url(); PADDING-BOTTOM: 2px;
- BORDER-LEFT: #909090 1px solid; COLOR: #fff; MARGIN-RIGHT: 3px;
- PADDING-TOP: 2px; BORDER-BOTTOM: #909090 1px solid; TEXT-DECORATION: none 
-} 
-DIV.black A:hover { 
-BORDER-RIGHT: #f0f0f0 1px solid; BORDER-TOP: #f0f0f0 1px solid;
- BACKGROUND-IMAGE: BORDER-LEFT: #f0f0f0 1px solid;
- COLOR: #ffffff; BORDER-BOTTOM: #f0f0f0 1px solid; BACKGROUND-COLOR: #404040 
-} 
-DIV.black A:active { 
-BORDER-RIGHT: #f0f0f0 1px solid; BORDER-TOP: #f0f0f0 1px solid; 
-BACKGROUND-IMAGE: BORDER-LEFT: #f0f0f0 1px solid; 
-COLOR: #ffffff; BORDER-BOTTOM: #f0f0f0 1px solid; BACKGROUND-COLOR: #404040 
-} 
-.divContent
- {
-color:#fff;
-font-size：30px；
+DIV.black{line-height:25px;PADDING-RIGHT:1px;PADDING-LEFT:1px;FONT-SIZE:100%;MARGIN:1px;COLOR:#fff;BACKGROUND-COLOR:#000;TEXT-ALIGN:left}
+DIV.black A{BORDER-RIGHT:#909090 1px solid;PADDING-RIGHT:5px;BACKGROUND-POSITION:50% bottom;BORDER-TOP:#909090 1px solid;PADDING-LEFT:5px;BACKGROUND-IMAGE:url();PADDING-BOTTOM:2px;BORDER-LEFT:#909090 1px solid;COLOR:#fff;MARGIN-RIGHT:3px;PADDING-TOP:2px;BORDER-BOTTOM:#909090 1px solid;TEXT-DECORATION:none}
+DIV.black A:hover{BORDER-RIGHT:#f0f0f0 1px solid;BORDER-TOP:#f0f0f0 1px solid;BACKGROUND-IMAGE:BORDER-LEFT:#f0f0f0 1px solid;COLOR:#ffffff;BORDER-BOTTOM:#f0f0f0 1px solid;BACKGROUND-COLOR:#404040}
+DIV.black A:active{BORDER-RIGHT:#f0f0f0 1px solid;BORDER-TOP:#f0f0f0 1px solid;BACKGROUND-IMAGE:BORDER-LEFT:#f0f0f0 1px solid;COLOR:#ffffff;BORDER-BOTTOM:#f0f0f0 1px solid;BACKGROUND-COLOR:#404040}
+.divContent{color:#fff;font-size：30px；
 line-height：30px；
- font-family：“SimHei”；
- text-indent:2em;
- padding-bottom:10px;
- white-space: pre-wrap; /*css-3*/
-	white-space: -moz-pre-wrap; /*Mozilla,since1999*/
-	white-space: -pre-wrap; /*Opera4-6*/
-	white-space: -o-pre-wrap; /*Opera7*/
-	word-wrap: break-word; /*InternetExplorer5.5+*/
-  background-color: #000;
-        }
+font-family：“SimHei”；
+text-indent:2em;padding-bottom:10px;white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word;background-color:#000}
     </style>
 	<div class="container">
     <div class="panel panel-default">
@@ -342,45 +312,6 @@ line-height：30px；
     </script>	
 
 
- <#else/>
-
-<div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    ${file.name}
-                </a>
-            </h4>
-        </div>
-        <div class="panel-body">
-            <div id="text"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-
-    /**
-     *加载普通文本
-     */
-    function loadText() {
-        var base64data = $("#textData").val()
-        var textData = Base64.decode(base64data);
-        var textPreData = "<xmp style='background-color: #FFFFFF;overflow-y: scroll;border:none'>" + textData + "</xmp>";
-        $("#text").append(textPreData);
-    }
-
-loadText();
- 
-	  		 /*初始化水印*/
- if (!!window.ActiveXObject || "ActiveXObject" in window)
-{
-}else{
- initWaterMark();
-}
-</script>
-	 </#if>
 
 
 </body>
