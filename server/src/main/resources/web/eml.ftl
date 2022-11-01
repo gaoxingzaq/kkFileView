@@ -7,8 +7,10 @@
     <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0">
     <#include "*/commonHeader.ftl">
 </head>
-	<#if currentUrl?contains("http://") || currentUrl?contains("https://") || currentUrl?contains("file://") || currentUrl?contains("ftp://")>
+	<#if currentUrl?contains("http://") || currentUrl?contains("https://") || currentUrl?contains("file://")>
     <#assign finalUrl="${currentUrl}">
+  <#elseif currentUrl?contains("ftp://") >
+   <#assign finalUrl="${currentUrl}">
 <#else>
     <#assign finalUrl="${baseUrl}${currentUrl}">
 </#if>
@@ -21,7 +23,7 @@
     if (!url.startsWith(baseUrl)) {
         url = baseUrl + 'getCorsFile?urlPath=' + encodeURIComponent(url);
     }
-    document.getElementsByTagName('iframe')[0].src =  "${baseUrl}eml/index.html?file="+url+"?pdfXianzhi=${pdfXianzhi}";
+    document.getElementsByTagName('iframe')[0].src =  "${baseUrl}eml/index.html?file="+encodeURIComponent(url)+"&pdfXianzhi=${pdfXianzhi}";
     document.getElementsByTagName('iframe')[0].height = document.documentElement.clientHeight - 10;
     /**
      * 页面变化调整高度

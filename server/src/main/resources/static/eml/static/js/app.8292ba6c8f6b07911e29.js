@@ -1,4 +1,14 @@
 var emlbianliang; //全局变量
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
 webpackJsonp([1],{
 
 /***/ "/3rM":
@@ -233,12 +243,11 @@ var MailParser = __webpack_require__("Htqv").MailParser;
     };
   },
   mounted: function mounted() {
-	   var searchh = window.location.search;
-	searchh= searchh.replace("?file=","");
-	//console.log(searchh);
-    var file_url = searchh;
+      let url = getQueryVariable('file')
+	      url =decodeURIComponent(url)
+      // console.log(url);
     var xhr = new XMLHttpRequest();
-    xhr.open("get", file_url, true);
+    xhr.open("get", url, true);
     xhr.responseType = "blob";
     xhr.onload = function () {
       var _this = this;
@@ -2848,35 +2857,9 @@ function start_project()
 			.on("drop", ".dropzone", (function(t) {
 				return t.preventDefault(), t.stopPropagation(), t.originalEvent.dataTransfer && t.originalEvent.dataTransfer.files.length && (t.preventDefault(), t.stopPropagation(), r(t.originalEvent.dataTransfer.files[0])), !1
 			}));
-		var t, e, n = window.location.search;
-
-		function r(t) {
-			console.log("调试区");
-			var e = new FormData;
-			e.append("file", t), i.ajax({
-				url: "/read",
-				data: e,
-				processData: !1,
-				contentType: !1,
-				type: "POST",
-				success: function(t) {
-					console.log(t), i(".dropzone")
-						.removeClass("dragging"), i("#download-eml:visible")
-						.slideUp((function() {
-							i("#view-eml")
-								.fadeIn()
-						}));
-					var e = i(".eml-iframe")[0].contentWindow.document;
-					i(e)
-						.find("body")
-						.html(t.html || '<div style="font-family: courier;">' + t.text.replace(/\r?\n/g, "<br />") + "</div>"), a({
-							headers: t.headers,
-							attachments: t.attachments
-						})
-				}
-			})
-		}
-
+         var urll = getQueryVariable('file');
+             urll =decodeURIComponent(urll);
+		var t, e, n = urll;
 		function a(t) {
 			var e = t.headers,
 				n = t.attachments,
@@ -2919,7 +2902,7 @@ function start_project()
 			i(".eml-details")
 				.show()
 		}
-		n = n.replace("?file=", ""), t = n, (e = new XMLHttpRequest)
+		n = n, t = n, (e = new XMLHttpRequest)
 			.open("GET", t), e.responseType = "blob", e.onload = () => {
 				const t = e.response;
 				new window.File([t], "abc." + t.type.split("/")[1], {

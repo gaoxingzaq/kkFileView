@@ -28,6 +28,7 @@ public enum FileType {
 	EML("emlFilePreviewImpl"),
     Online3D("online3DFilePreviewImpl"),
     MHT("mhtFilePreviewImpl"),
+    PSD("psdFilePreviewImpl"),
 	SVG("svgFilePreviewImpl");
 
 
@@ -41,6 +42,7 @@ public enum FileType {
 	private static final String[] EML_TYPES = {"eml"};
     private static final String[] CAD_TYPES = {"dwg","dxf","dwf"};
     private static final String[] MHT_TYPES = {"mht"};
+    private static final String[] PSD_TYPES = {"psd","ai"};
     private static final String[] SSIM_TEXT_TYPES = ConfigConstants.getSimText();
     private static final String[] CODES = {"java", "c", "php", "go", "python", "py", "js", "html", "ftl", "css", "lua", "sh", "rb", "yaml", "yml", "json", "h", "cpp", "cs", "aspx", "jsp", "vue", "htm", "shtml", "shtml", "cmd", "sql", "bat"};
     private static final String[] MEDIA_TYPES = ConfigConstants.getMedia();
@@ -74,6 +76,9 @@ public enum FileType {
         }
         for (String mht : MHT_TYPES) {
             FILE_TYPE_MAPPER.put(mht, FileType.MHT);
+        }
+        for (String psd : PSD_TYPES) {
+            FILE_TYPE_MAPPER.put(psd, FileType.PSD);
         }
         for (String code : CODES) {
             FILE_TYPE_MAPPER.put(code, FileType.CODE);

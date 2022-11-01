@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[23],{446:function(n,t){},447:function(n,t){},448:function(n,t){},50:function(n,t,c){"use strict";function o(n){}c.r(t),c.d(t,"lstatSync",(function(){return o})),c.d(t,"readFileSync",(function(){return i}));const u={"//../../.svgo.yml":c(95)};function i(n){return u[n]}}}]);

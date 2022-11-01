@@ -7,15 +7,14 @@
         <link rel='stylesheet' href='xlsx/plugins/plugins.css' />
         <link rel='stylesheet' href='xlsx/css/luckysheet.css' />
         <link rel='stylesheet' href='xlsx/assets/iconfont/iconfont.css' />
-
         <script src="xlsx/plugins/js/plugin.js"></script>
         <script src="xlsx/luckysheet.umd.js"></script>
 		<script src="js/watermark.js" type="text/javascript"></script>
     </head>
-	<#if pdfUrl?contains("http://") || pdfUrl?contains("https://") || pdfUrl?contains("ftp://")>
-    <#assign finalUrl="${pdfUrl}">
+<#if pdfUrl?contains("http://") || pdfUrl?contains("https://") || pdfUrl?contains("ftp://")>
+<#assign finalUrl="${pdfUrl}">
 <#else>
-    <#assign finalUrl="${baseUrl}${pdfUrl}">
+<#assign finalUrl="${baseUrl}${pdfUrl}">
 </#if>
 	<script>
     /**
@@ -60,8 +59,6 @@
    <body>
         <div id="lucky-mask-demo" style="position: absolute;z-index: 1000000;left: 0px;top: 0px;bottom: 0px;right: 0px; background: rgba(255, 255, 255, 0.8); text-align: center;font-size: 40px;align-items:center;justify-content: center;display: none;">加载中</div>
         <p style="text-align:center;"> 
-		
-
  <div id="button-area">
   <label><button onclick="tiaozhuan()">跳转HTML预览</button></label>
       <button id="confirm-button" onclick="print()">打印</button>
@@ -78,29 +75,45 @@
                 let mask = document.getElementById("lucky-mask-demo");
 
                    function loadText() {
-					  initWaterMark(); // 是否显示水印
+                            initWaterMark(); // 是否显示水印
                             var value = url;
                             var name = '${file.name}';
                             if(value==""){
                                 return;
                             }
-                            mask.style.display = "flex";
+                           // mask.style.display = "flex";
                             LuckyExcel.transformExcelToLuckyByUrl(value, name, function(exportJson, luckysheetfile){
-                                
                                 if(exportJson.sheets==null || exportJson.sheets.length==0){
-                                    alert("Failed to read the content of the excel file, currently does not support xls files!");
+                                    alert("读取excel文件内容失败!");
                                     return;
                                 }
-                              //  console.log(exportJson, luckysheetfile);
+								// console.log(exportJson.sheets);
                                 mask.style.display = "none";
                                 window.luckysheet.destroy();
-                                
                                 window.luckysheet.create({
-                                    container: 'luckysheet', //luckysheet is the container id
-									lang: "zh",
-                                  allowCopy: true, // 是否允许拷贝
+                                container: 'luckysheet', //luckysheet is the container id
+                                lang: "zh",
+                                pager: {
+	                           pageIndex: 1, //当前的页码
+	                          pageSize: 10, //每页显示多少行数据
+	                          total: 50, //数据总行数
+                              showSkip: true,
+	                         selectOption: [10, 20] //允许设置每页行数的选项
+                              },
+                             showtoolbarConfig:{
+			                 image: true,
+			                 print: false,
+		                      },
+                           hook:{
+                           onTogglePager:function(range){
+					//	range.data = exportJson.sheets
+						},
+					},
+
+                               allowCopy: true, // 是否允许拷贝
                                showtoolbar: true, // 是否显示工具栏
                                showinfobar: false, // 是否显示顶部信息栏
+							    // myFolderUrl: "/",//作用：左上角<返回按钮的链接
                                showsheetbar: true, // 是否显示底部sheet页按钮
                                showstatisticBar: true, // 是否显示底部计数栏
                                sheetBottomConfig: true, // sheet页下方的添加行按钮和回到顶部按钮配置
@@ -112,10 +125,10 @@
                                showColumnBar: false, // 是否显示列号区域
                                sheetFormulaBar: false, // 是否显示公式栏
                                enableAddBackTop: true,//返回头部按钮
-                                
-                                    data:exportJson.sheets,
-                                    title:exportJson.info.name,
-                                    userInfo:exportJson.info.name.creator
+                               data:exportJson.sheets,
+                              title:exportJson.info.name,
+							  plugins: ['chart'],
+                              userInfo:exportJson.info.name.creator
                                 });
                             });
                     }

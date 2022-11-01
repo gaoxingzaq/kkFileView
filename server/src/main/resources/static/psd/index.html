@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PSD Viewer</title>
+</head>
+  <style>
+    body>.pre_loading {
+      background: #1f2424;
+      position: absolute;
+      z-index: 100;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      color: white;
+      display: flex;
+      align-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+      flex-direction: column;
+      padding-top: 300px;
+    }
+
+    body>.pre_loading>.logo {
+      font-size: 36px;
+    }
+
+    body>.pre_loading .etch {
+      color: #FAC000;
+    }
+
+    body>.pre_loading .psd {
+      color: #4f85f2;
+    }
+
+    body>.pre_loading #status {}
+
+    body>.pre_loading>.intro {
+      color: #999;
+      width: 600px;
+    }
+  </style>
+<body>
+<div class="pre_loading">
+<p id="status">Loading...</p>
+  </div>
+</body>
+<script src="build/main.bundle.js" async></script>
+<script>
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
+var pdfXianzhid = getQueryVariable('pdfXianzhi')
+  // console.log(pdfXianzhid);
+if ('false' != pdfXianzhid) {
+  //屏蔽右键菜单
+document.oncontextmenu = function (event) {
+  if (window.event) {
+    event = window.event;
+  }
+  try {
+    var the = event.srcElement;
+    if (!((the.tagName == "INPUT" && the.type.toLowerCase() == "text") || the.tagName == "TEXTAREA")) {
+      return false;
+    }
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+//禁止f12
+
+function fuckyou() {
+  window.close(); //关闭当前窗口(防抽)
+  window.location = "about:blank"; //将当前窗口跳转置空白页
+}
+//禁止Ctrl+U
+var arr = [123, 17, 18];
+document.oncontextmenu = new Function("event.returnValue=false;"), //禁用右键
+
+  window.onkeydown = function (e) {
+    var keyCode = e.keyCode || e.which || e.charCode;
+    var ctrlKey = e.ctrlKey || e.metaKey;
+    console.log(keyCode + "--" + keyCode);
+    if (ctrlKey && keyCode == 85) {
+      e.preventDefault();
+    }
+    if (arr.indexOf(keyCode) > -1) {
+      e.preventDefault();
+    }
+  }
+
+function ck() {
+  console.profile();
+  console.profileEnd();
+  //我们判断一下profiles里面有没有东西，如果有，肯定有人按F12了，没错！！
+  if (console.clear) {
+    console.clear()
+  };
+  if (typeof console.profiles == "object") {
+    return console.profiles.length > 0;
+  }
+}
+}
+</script>
+</html>

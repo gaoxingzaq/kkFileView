@@ -5,7 +5,7 @@
 
     <groupId>cn.keking</groupId>
     <artifactId>filepreview</artifactId>
-    <version>4.7.9.2</version>
+    <version>4.8</version>
     <packaging>pom</packaging>
 
     <name>kkFileView-parent</name>

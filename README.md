@@ -58,6 +58,15 @@ QQ群:816703453
 
 地址：[https://kkfileview.keking.cn](https://kkfileview.keking.cn)
 
+### 历史更新记录  
+2022年11月1日，v4.8版本发布:    
+1、新增psd、ai格式支持    
+2、markdown格式支持公式
+3、更新Luckysheet 组件
+4、优化JS截取脚本   
+5、文本读取优化读取速度   
+6、其他等等   
+
 
 ### 历史更新记录  
 2022年10月22日，v4.7.9.2版本发布:    

@@ -3,40 +3,42 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0">
+    <link rel="stylesheet" href="md/css/css.css"/>
     <title>${file.name}文本预览</title>
-    <script src="js/marked.min.js" type="text/javascript"></script>
-    <link id="mdstyle" rel="stylesheet" type="text/css" href="css/markdown.css">
-    <#include "*/commonHeader.ftl">
+<script src="js/watermark.js" type="text/javascript"></script>
+<script src="js/base64.min.js" type="text/javascript"></script>
 </head>
 <body>
-<input hidden id="textData" value="${textData}"/>
-<div class="container">
-    <div class="panel panel-default">
-        <div id="markdown_btn" class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    ${file.name}
-                </a>
-            </h4>
-        </div>
-        <div id="text_btn" class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                    ${file.name}
-                </a>
-            </h4>
-        </div>
-        <div class="panel-body">
-            <div id="markdown"></div>
-        </div>
-    </div>
-</div>
 <script>
- 
     /**
-     * 加载markdown
+     * 初始化水印
      */
-	   function htmlttt (str){ 
+    function initWaterMark() {
+        let watermarkTxt = '${watermarkTxt}';
+        if (watermarkTxt !== '') {
+            watermark.init({
+                watermark_txt: '${watermarkTxt}',
+                watermark_x: 0,
+                watermark_y: 0,
+                watermark_rows: 0,
+                watermark_cols: 0,
+                watermark_x_space: ${watermarkXSpace},
+                watermark_y_space: ${watermarkYSpace},
+                watermark_font: '${watermarkFont}',
+                watermark_fontsize: '${watermarkFontsize}',
+                watermark_color: '${watermarkColor}',
+                watermark_alpha: ${watermarkAlpha},
+                watermark_width: ${watermarkWidth},
+                watermark_height: ${watermarkHeight},
+                watermark_angle: ${watermarkAngle},
+            });
+        }
+    }
+
+</script>
+
+<script>
+function htmlttt (str){ 
              var s = "";
              if(str.length == 0) return "";
              s = str.replace(/&amp;/g,"&");
@@ -50,37 +52,24 @@
 			  s = s.replace(/<iframe/gi, "&lt;iframe ");
              return s;  
        } 
-    function loadMarkdown() {
-        var textData = Base64.decode($("#textData").val())
-		  textData = htmlttt(textData);
-        window.textPreData = "<pre style='background-color: #FFFFFF;border:none'>" + textData + "</pre>";
-        window.textMarkdownData = marked.parse(textData);
-        $("#markdown").html(window.textMarkdownData);
-    }
-    $("#markdown_btn").hide();
-       loadMarkdown();
-	   
-        $("#markdown_btn").click(function () {
-            $("#markdown").html(window.textMarkdownData);
-            $("#text_btn").show()
-            $("#markdown_btn").hide()
-        });
+function loadText() {
+	 neirong = htmlttt(Base64.decode("${textData}"));
+	 return neirong;
+	}
+</script>
+	<div id=app></div>
+    <script type="text/javascript" src="md/js/manifest.f8f7e750f6d0737b68e0.js"></script>
+    <script type="text/javascript" src="md/js/vendor.89a436f29164fce8caf9.js"></script>
+    <script type="text/javascript" src="md/js/app.5865965e0e77e43dcfa6.js"></script>
+</body>
+<script>
 
-        $("#text_btn").click(function () {
-            $("#markdown_btn").show()
-            $("#text_btn").hide();
-            $("#markdown").html(window.textPreData);
-        });
-  
-	
-
- if (!!window.ActiveXObject || "ActiveXObject" in window)
+if (!!window.ActiveXObject || "ActiveXObject" in window)
 {
 }else{
  initWaterMark();
 }
-
+     
 </script>
-</body>
 
 </html>
