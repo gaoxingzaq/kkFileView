@@ -1,1 +1,0 @@
-http://mirrors.cloud.tencent.com/libreoffice/libreoffice/stable/
