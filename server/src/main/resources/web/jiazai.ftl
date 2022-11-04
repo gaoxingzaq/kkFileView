@@ -19,7 +19,7 @@
 				<span class="letter"><div class="character">g</div> <span></span></span>
 			</div>
 		</div>
-		<div class="how-to"><h1><span>\u6b63\u5728\u8f6c\u6362\u4e2d\uff0c\u8bf7\u60a8\u8010\u5fc3\u7b49\u5f85...</span><h1></div>
+	<div class="how-to"><h1><span>正在转换中，请您耐心等待...</span><h1></div>
 		
 	</div>
 </div>
@@ -41,7 +41,7 @@
 				document.close();
             },
             error: function (data) {
-			 alert("\u8f6c\u6362\u5931\u8d25\u4e86");
+			 alert("转换失败了");
 			//document.write(data);
                // console.log(data);
             }
