@@ -408,14 +408,7 @@ public abstract class AWTMakerSVG {
         Composite oldComposite = graphics.getComposite();
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
         graphics.setTransform(MatrixUtils.createAffineTransform(MatrixUtils.base()));
-       // System.out.println(image.getHeight());
-       // System.out.println(image.getWidth());
-        if(image.getWidth()>5000 ||image.getHeight()>3000){
-          graphics.drawImage(image,  0, 0, 2024, 768, 0, 0, 2024, 768, null);
-         //   graphics.drawImage(image, MatrixUtils.createAffineTransform(m), null);
-        }else {
-            graphics.drawImage(image, MatrixUtils.createAffineTransform(m), null);
-        }
+        graphics.drawImage(image, MatrixUtils.createAffineTransform(m), null);
         graphics.setComposite(oldComposite);
 
     }
