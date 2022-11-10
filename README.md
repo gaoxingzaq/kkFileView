@@ -45,6 +45,7 @@ QQ群:816703453
 1. 支持 zip, rar, jar, tar, gzip 等压缩包
 1. 支持 jpg, jpeg, png, gif, tif, tiff,webp 等图片预览（翻转，缩放，镜像）
 1. 支持 eml,svg
+1. 支持 psd,ai
 1. 支持 OFD 来源于 https://gitee.com/Donal/ofd.js  (浏览器版本 目前收费了免费 有水印和时间限制) 开源协议Apache-2.0
 1. 支持 OFD 来源于 https://gitee.com/cnofd/ofdview (浏览器版本) 开源协议Apache-2.0
 1. 支持 OFD 转换 来源于 https://gitee.com/ofdrw/ofdrw  开源协议Apache-2.0
@@ -57,12 +58,18 @@ QQ群:816703453
 ### 原版官网及文档
 
 地址：[https://kkfileview.keking.cn](https://kkfileview.keking.cn)
+### 历史更新记录  
+
+2022年11月10日:    
+1、优化OFD js方法中黑屏    
+2、压缩包列表名称简短  
+
 
 ### 历史更新记录  
 2022年11月1日，v4.8版本发布:    
 1、新增psd、ai格式支持    
-2、markdown格式支持公式
-3、更新Luckysheet 组件
+2、markdown格式支持公式   
+3、更新Luckysheet 组件   
 4、优化JS截取脚本   
 5、文本读取优化读取速度   
 6、其他等等   

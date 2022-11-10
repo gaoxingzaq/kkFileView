@@ -44,7 +44,7 @@
     <#assign finalUrl="${baseUrl}${img}">
 </#if>
 <div class="zTreeDemoBackground left">
- <h6><li><a href="javascript:void(0);" onclick="deleteFile('${finalUrl}')">${img}</a></li>
+ <h6><li><a href="javascript:void(0);" onclick="openFile('${finalUrl}')">${img?substring(img?lastIndexOf("/")+1)}</a></li>
      </div>
     </#list>
 </div>
