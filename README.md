@@ -60,7 +60,7 @@ QQ群:816703453
 地址：[https://kkfileview.keking.cn](https://kkfileview.keking.cn)
 ### 历史更新记录  
 2022年11月11日，v4.8.1版本发布:    
-1、针对服务支持TRACE请求修复配置文件控制    
+1、针对服务支持TRACE请求修复,可在配置文件控制    
 2、程序接口阻止为空的接入  
 3、CAD转换组件升级  
 
