@@ -242,7 +242,7 @@
          <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cad</artifactId>
-            <version>22.6.1</version>
+            <version>22.7</version>
             <scope>system</scope>
              <systemPath>${basedir}/lib/aspose-cad-22.7-jdk16.jar</systemPath>
         </dependency>
