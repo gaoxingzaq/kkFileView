@@ -63,6 +63,10 @@ public class OnlinePreviewController {
     @GetMapping( "/onlinePrevieww")
     public String onlinePrevieww(String url,String highlightAll, String page, Model model, HttpServletRequest req) {
         String ip = jilvip(req);  //获取IP地址
+        if (url == null || url.length()<= 0){
+            logger.info("URL异常：{}", ip);
+            return otherFilePreview.notSupportedFile(model, "该文件不允许预览：" + url);
+        }
         String fileUrl;
         try {
             if(IndexController.isBase64(url)){
@@ -73,10 +77,6 @@ public class OnlinePreviewController {
         } catch (Exception ex) {
             String errorMsg = String.format(BASE64_DECODE_ERROR_MSG, "url");
             return otherFilePreview.notSupportedFile(model, errorMsg);
-        }
-        if (fileUrl == null ){
-            logger.info("URL异常：{}", fileUrl);
-            return otherFilePreview.notSupportedFile(model, "该文件不允许预览：" + fileUrl);
         }
         FileAttribute fileAttribute = fileHandlerService.getFileAttribute(fileUrl, req);
         if (highlightAll == null || highlightAll == "" ){
@@ -105,18 +105,20 @@ public class OnlinePreviewController {
         return filePreview.filePreviewHandle(fileUrl, model, fileAttribute);
     }
     @GetMapping( "/onlinePreview")
-    public String onlinePreview(HttpServletRequest request, Model model) throws IOException{
-        String query = request.getQueryString();
-        if(query == null){
-            return otherFilePreview.notSupportedFile(model, "url异常或者不正确：" + query);
+    public String onlinePreview(String url,HttpServletRequest request, Model model) throws IOException{
+        if(url == null ||url.length()<= 0){
+            return otherFilePreview.notSupportedFile(model, "url异常或者不正确：" + url);
         }
-        String urlPath = query.replaceFirst("url=","");
-        model.addAttribute("pdfUrl",urlPath);
+        model.addAttribute("pdfUrl",url);
         return Jiaz_FILE_PAGE;
     }
 
     @GetMapping( "/picturesPreview")
     public String picturesPreview(String urls, Model model, HttpServletRequest req) throws UnsupportedEncodingException {
+        if (urls == null || urls.length()<= 0){
+            logger.info("URL异常：{}", urls);
+            return otherFilePreview.notSupportedFile(model, "NULL地址不允许预览：");
+        }
         String ip = jilvip(req);  //获取IP地址
         String fileUrls;
         try {
@@ -129,10 +131,6 @@ public class OnlinePreviewController {
         } catch (Exception ex) {
             String errorMsg = String.format(BASE64_DECODE_ERROR_MSG, "urls");
             return otherFilePreview.notSupportedFile(model, errorMsg);
-        }
-        if (fileUrls == null || fileUrls.length()<= 0){
-            logger.info("URL异常：{}", fileUrls);
-            return otherFilePreview.notSupportedFile(model, "NULL地址不允许预览：");
         }
         if(!ConfigConstants.getlocalpreview().equalsIgnoreCase("false")) {
             if ( fileUrls.toLowerCase().startsWith("file:") || fileUrls.toLowerCase().startsWith("file%3")) {
@@ -183,6 +181,10 @@ public class OnlinePreviewController {
      */
     @GetMapping("/getCorsFile")
     public String getCorsFile(String urlPath, Model model, HttpServletResponse response) {
+        if (urlPath == null || urlPath.length()<= 0){
+            logger.info("URL异常：{}", urlPath);
+            return otherFilePreview.notSupportedFile(model, "NULL地址不允许预览：");
+        }
         HttpURLConnection urlcon;
         boolean xieyi ;
         if(urlPath.toLowerCase().startsWith("ftp:")) {
@@ -190,11 +192,11 @@ public class OnlinePreviewController {
         }else {
             xieyi= true;
         }
-        if (urlPath == null || urlPath.toLowerCase().startsWith("file:") || urlPath.toLowerCase().startsWith("file%3")) {
-            logger.info("读取跨域文件异常：{}", urlPath);
-            return otherFilePreview.notSupportedFile(model, "该类型不允许预览：" + urlPath);
-        }else {
-            logger.info("读取跨域文件url：{}", urlPath);
+        if(!ConfigConstants.getlocalpreview().equalsIgnoreCase("false")) {
+            if(urlPath.toLowerCase().startsWith("file:") || urlPath.toLowerCase().startsWith("file%3")) {
+                return otherFilePreview.notSupportedFile(model, "不支持本地协议：" + urlPath);
+            }
+        }
             urlPath = urlPath.replace("%20", " ");
             urlPath = urlPath.replace("?pdfXianzhi="+ConfigConstants.getpdfXianzhi(),"");
             try {
@@ -243,15 +245,19 @@ public class OnlinePreviewController {
                     return otherFilePreview.notSupportedFile(model, "文件有问题：" + urlPath);
                 }
             }
-        }
         return null;
     }
     /**
      * PDF分片功能
      */
     @GetMapping("/download")
-    public String download(String urlPath, Model model, HttpServletResponse response) throws IOException, DocumentException {
-        if(urlPath == null || urlPath.toLowerCase().startsWith("file:") || urlPath.toLowerCase().startsWith("file%3")){
+    public String download(String urlPath, Model model, HttpServletResponse response,HttpServletRequest req) throws IOException, DocumentException {
+        String ip = jilvip(req);
+        if (urlPath == null ||urlPath.length()<= 0 ) {
+            logger.info("读取文件异常：{}，ip：{}", urlPath,ip);
+            return otherFilePreview.notSupportedFile(model, "文件异常：" + urlPath);
+        }
+        if(urlPath.toLowerCase().startsWith("file:") || urlPath.toLowerCase().startsWith("file%3")){
             logger.info("文件地址异常：{}", urlPath);
         }else if(!urlPath.toLowerCase().startsWith("http")){
             urlPath ="file:///"+  FILE_DIR + urlPath;
@@ -317,6 +323,14 @@ public class OnlinePreviewController {
     @ResponseBody
     public String addQueueTask(String url) {
         logger.info("添加转码队列url：{}", url);
+        if (url == null ||url.length()<= 0 ) {
+            return "地址为空!失败";
+        }
+        if(!ConfigConstants.getlocalpreview().equalsIgnoreCase("false")) {
+            if ( url.toLowerCase().startsWith("file:") || url.toLowerCase().startsWith("file%3")) {
+                return "地址不合法!失败";
+            }
+        }
         cacheService.addQueueTask(url);
         return "success";
     }

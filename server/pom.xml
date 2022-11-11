@@ -6,7 +6,7 @@
     <parent>
         <groupId>cn.keking</groupId>
         <artifactId>filepreview</artifactId>
-        <version>4.8</version>
+        <version>4.8.1</version>
     </parent>
 
     <artifactId>kkFileView</artifactId>
@@ -244,7 +244,7 @@
             <artifactId>aspose-cad</artifactId>
             <version>22.6.1</version>
             <scope>system</scope>
-             <systemPath>${basedir}/lib/aspose-cad-22.6.1-jdk16.jar</systemPath>
+             <systemPath>${basedir}/lib/aspose-cad-22.7-jdk16.jar</systemPath>
         </dependency>
 		 <!-- 邮件转换 -->
 		<dependency>
