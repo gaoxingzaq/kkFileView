@@ -105,11 +105,13 @@ public class OnlinePreviewController {
         return filePreview.filePreviewHandle(fileUrl, model, fileAttribute);
     }
     @GetMapping( "/onlinePreview")
-    public String onlinePreview(String url,HttpServletRequest request, Model model) throws IOException{
-        if(url == null ||url.length()<= 0){
-            return otherFilePreview.notSupportedFile(model, "url异常或者不正确：" + url);
+    public String onlinePreview(HttpServletRequest request, Model model) throws IOException{
+        String query = request.getQueryString();
+        if(query == null||query.length()<= 0){
+            return otherFilePreview.notSupportedFile(model, "url异常或者不正确：" + query);
         }
-        model.addAttribute("pdfUrl",url);
+        String urlPath = query.replaceFirst("url=","");
+        model.addAttribute("pdfUrl",urlPath);
         return Jiaz_FILE_PAGE;
     }
 
