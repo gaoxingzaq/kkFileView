@@ -93,7 +93,15 @@ public class DownloadUtils {
             if (!fileAttribute.getSkipDownLoad()) {
                 if (isHttpUrl(url)) {
                     File realFile = new File(realPath);
-                    FileUtils.copyURLToFile(url, realFile);
+                     try {
+                        FileUtils.copyURLToFile(url, realFile);
+                    } catch (IOException e) {
+                        System.out.println(e);
+                        xiazai.setCode(1);
+                        xiazai.setContent(null);
+                        urlcon.disconnect();
+                        return xiazai;
+                    }
                     int retryTimes =0;
                     while (retryTimes <3){
                         FileUtils.copyURLToFile(url, realFile);
