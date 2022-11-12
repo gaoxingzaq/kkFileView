@@ -52,10 +52,11 @@ public class DownloadUtils {
         ReturnResponse<String> response = new ReturnResponse<>(0, "下载成功!!!", "");
         ReturnResponse<String> xiazai = new ReturnResponse<>(0, "下载失败!!!", "");
         String realPath = DownloadUtils.getRelFilePath(fileName, fileAttribute);
+        HttpURLConnection urlcon = null;
         try {
             URL url = WebUtils.normalizedURL(urlStr);
             if(!urlStr.toLowerCase().startsWith("file") && !urlStr.toLowerCase().startsWith("ftp")) {
-                HttpURLConnection urlcon=(HttpURLConnection)url.openConnection();
+                urlcon=(HttpURLConnection)url.openConnection();
                 urlcon.setConnectTimeout(30000);
                 urlcon.setReadTimeout(30000);
                 urlcon.setInstanceFollowRedirects(false);
@@ -78,10 +79,10 @@ public class DownloadUtils {
                             System.out.println("地址错误");
                             xiazai.setCode(1);
                             xiazai.setContent(null);
+                            urlcon.disconnect();
                             return xiazai;
                         }
                     }
-                    urlcon.disconnect();
                 } catch (IOException e) {
                     System.out.println("地址错误");
                     xiazai.setCode(1);
@@ -124,6 +125,9 @@ public class DownloadUtils {
             response.setMsg(fileName);
             return response;
         } catch (IOException | GalimatiasParseException e) {
+            if(urlcon!= null){
+                urlcon.disconnect();
+            }
             logger.error("文件下载失败，url：{}", urlStr, e);
             response.setCode(1);
             response.setContent(null);
