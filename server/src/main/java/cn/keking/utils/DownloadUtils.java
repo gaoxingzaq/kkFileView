@@ -99,7 +99,6 @@ public class DownloadUtils {
                         System.out.println(e);
                         xiazai.setCode(1);
                         xiazai.setContent(null);
-                        urlcon.disconnect();
                         return xiazai;
                     }
                     int retryTimes =0;
