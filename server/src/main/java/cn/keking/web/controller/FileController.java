@@ -64,7 +64,7 @@ public class FileController {
             fileType= fileName.substring(i+1);
             fileType= fileType.toLowerCase();
         }
-        if ( fileType == null || fileType.length() == 0){
+        if ( fileType == null || fileType.length() == 0 ||fileType.equalsIgnoreCase("exe") ||fileType.equalsIgnoreCase("dll") ){
             return new ObjectMapper().writeValueAsString(ReturnResponse.failure(fileType+"不允许上传的类型"));
         }
         // 判断是否存在同名文件
@@ -118,6 +118,10 @@ public class FileController {
         }
         if (ip.contains(",")) {
             ip = ip.split(",")[0];
+        }
+        if (fileName == null || fileName.length()<= 0){
+            logger.info("url异常：{}，IP：{}", fileName,ip);
+            return new ObjectMapper().writeValueAsString("地址非法，删除失败！");
         }
         try {
             fileName = URLDecoder.decode(fileName, "UTF-8");
