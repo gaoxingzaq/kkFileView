@@ -19,13 +19,13 @@
 
 3. 具体接入方法: https://gitee.com/gaoxingzaq/file-online-preview-master/blob/master/server/src/main/bin/接入说明.md
 
-3. 错误解决办法: https://gitee.com/gaoxingzaq/file-online-preview-master/blob/master/server/src/main/bin/KK错误汇总及修复方法.docx
+4. 其他功能选项: https://gitee.com/gaoxingzaq/file-online-preview-master/blob/master/server/src/main/config/application.properties  (配置文件选择)
 
-4. 其他功能选项: https://gitee.com/gaoxingzaq/file-online-preview-master/blob/master/server/src/main/config/application.properties
+5. 查看历史更新记录: https://gitee.com/gaoxingzaq/file-online-preview-master22
 
-5. 其他参数修改: config/application.properties
+### 错误解决办法
 
-6. 查看历史更新记录: https://gitee.com/gaoxingzaq/file-online-preview-master22
+1. 错误解决办法: https://gitee.com/gaoxingzaq/file-online-preview-master/blob/master/server/src/main/bin/KK错误汇总及修复方法.docx
 
 ### 在线体验
 > 请善待公共服务，会不定时停用
@@ -58,7 +58,14 @@ QQ群:816703453
 ### 原版官网及文档
 
 地址：[https://kkfileview.keking.cn](https://kkfileview.keking.cn)
+
 ### 历史更新记录  
+2022年11月11日，v4.8.1版本发布:    
+1、优化程序接口为空的接入    
+2、OFD字体优化 (ofd.js)  
+3、优化代码  
+4、新增 mhtml格式支持 对mhtml格式优化  
+
 2022年11月11日，v4.8.1版本发布:    
 1、针对服务支持TRACE请求修复,可在配置文件控制    
 2、程序接口阻止为空的接入  
