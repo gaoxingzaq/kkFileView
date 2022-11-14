@@ -64,7 +64,7 @@ public class FileController {
             fileType= fileName.substring(i+1);
             fileType= fileType.toLowerCase();
         }
-        if ( fileType == null || fileType.length() == 0 ||fileType.equalsIgnoreCase("exe") ||fileType.equalsIgnoreCase("dll") ){
+        if (fileType.length() == 0 || fileType.equalsIgnoreCase("exe") || fileType.equalsIgnoreCase("dll")){
             return new ObjectMapper().writeValueAsString(ReturnResponse.failure(fileType+"不允许上传的类型"));
         }
         // 判断是否存在同名文件
@@ -93,12 +93,10 @@ public class FileController {
         }
     }
 
-    private static Pattern FilePattern = Pattern.compile("[\\\\/:*?\"<>|]");
+    private static final Pattern FilePattern = Pattern.compile("[\\\\/:*?\"<>|]");
 
     /**
      * 路径遍历 漏洞修复
-     * @param str
-     * @return
      */
     public static String filenameFilter(String str) {
         return str==null?null:FilePattern.matcher(str).replaceAll("");
@@ -106,19 +104,7 @@ public class FileController {
 
     @GetMapping("/deleteFile")
     public String deleteFile(String fileName, HttpServletRequest request) throws JsonProcessingException {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        if (ip.contains(",")) {
-            ip = ip.split(",")[0];
-        }
+        String ip = OnlinePreviewController.jilvip(request);  //获取IP地址
         if (fileName == null || fileName.length()<= 0){
             logger.info("url异常：{}，IP：{}", fileName,ip);
             return new ObjectMapper().writeValueAsString("地址非法，删除失败！");
@@ -145,16 +131,8 @@ public class FileController {
      */
     public static List<File> getFileSort(String path) {
         List<File> list = getFiles(path, new ArrayList<>());
-        if (list != null && list.size() > 0) {
-            Collections.sort(list, (file, newFile) -> {
-                if (file.lastModified() < newFile.lastModified()) {
-                    return 1;
-                } else if (file.lastModified() == newFile.lastModified()) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            });
+        if (list.size() > 0) {
+            list.sort((file, newFile) -> Long.compare(newFile.lastModified(), file.lastModified()));
         }
         return list;
     }
@@ -162,6 +140,7 @@ public class FileController {
         File realFile = new File(realpath);
         if (realFile.isDirectory()) {
             File[] subfiles = realFile.listFiles();
+            assert subfiles != null;
             for (File file : subfiles) {
                 if (file.isDirectory()) {
                     getFiles(file.getAbsolutePath(), files);
