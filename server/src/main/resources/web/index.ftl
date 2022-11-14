@@ -38,27 +38,27 @@ white-space:pre-line;word-wrap: break-word;    word-break: break-all;
                 如果你的项目需要接入文件预览项目，达到对docx、excel、ppt、jpg等文件的预览效果，那么通过在你的项目中加入下面的代码就可以
                 成功实现：
                 <pre style="background-color: #2f332a;color: #cccccc">
-	 &lt;script type="text/javascript" src="${baseUrl}js/base64.min.js">&lt;/script> 
-                    var url = 'http://127.0.0.1:8080/file/test.txt'; //要预览文件的访问地址
-                    window.open('${baseUrl}onlinePreview?url='+encodeURIComponent(Base64.encode(url)));
-                   更新功能&gengxin=ok 固定格式 为了开启缓存 而且需要更新的文件设立的
-                   其他功能  &filePassword=(密码)&highlightAll=(PDF高亮)&watermarkTxt=(水印)&&page=(页码)
-                   下载流图片的方法 &officePreviewType=imagexz 其他转换内核 &officePreviewType=poi 
+&lt;script type="text/javascript" src="${baseUrl}js/base64.min.js">&lt;/script> 
+var url = 'http://127.0.0.1:8080/file/test.txt'; //要预览文件的访问地址
+window.open('${baseUrl}onlinePreview?url='+encodeURIComponent(Base64.encode(url)));
+更新功能&gengxin=ok 固定格式 为了开启缓存 而且需要更新的文件设立的
+其他功能  &filePassword=(密码)&highlightAll=(PDF高亮)&watermarkTxt=(水印)&&page=(页码)
+下载流图片的方法 &officePreviewType=imagexz 其他转换内核 &officePreviewType=poi 
                 </pre>
             </div>
             <div>
                 新增多图片同时预览功能，接口如下：
                 <pre style="background-color: #2f332a;color: #cccccc">
-                    var fileUrl =url1+"|"+"url2";//多图使用“|”字符隔开
-                    window.open('${baseUrl}picturesPreview?urls='+encodeURIComponent(Base64.encode(fileUrl)));
+var fileUrl =url1+"|"+"url2";//多图使用“|”字符隔开
+window.open('${baseUrl}picturesPreview?urls='+encodeURIComponent(Base64.encode(fileUrl)));
                 </pre>
             </div>
 			<div>
                 下载流方法，接口如下：
                 <pre style="background-color: #2f332a;color: #cccccc">
-                 var originUrl = 'http://127.0.0.1:8080/filedownload?fileId=1'; //要预览文件的访问地址
-                 var previewUrl = originUrl + '&fullfilename=/test.txt'   //这里必须加反斜杠
-                 window.open('${baseUrl}onlinePreview?url='+encodeURIComponent(Base64.encode(previewUrl)));
+var originUrl = 'http://127.0.0.1:8080/filedownload?fileId=1'; //要预览文件的访问地址
+var previewUrl = originUrl + '&fullfilename=/test.txt'   //这里必须加反斜杠
+window.open('${baseUrl}onlinePreview?url='+encodeURIComponent(Base64.encode(previewUrl)));
                 </pre>
             </div>
         </div>
@@ -167,6 +167,10 @@ if(_url==""||_url==null||_url==undefined){
  alert("地址为空弹出默认图片");
     _url="http://n.sinaimg.cn/news/crawl/167/w1080h687/20210311/4044-kmeeius6951805.jpg";
 }
+ if (!checkUrl(_url)) {
+                alert('请输入正确的url');
+                return false;
+            }
             var urlField = $(this).find('[name=url]');
             var b64Encoded = Base64.encode(_url);
             urlField.val(b64Encoded);
@@ -200,6 +204,28 @@ if(_url==""||_url==null||_url==undefined){
         }); 
     });
 	
+    
+       function checkUrl(url){
+        //url= 协议://(ftp的登录信息)[IP|域名](:端口号)(/或?请求参数)
+        var strRegex = '^((https|http|ftp)://)'//(https或http或ftp)
+            + '(([\\w_!~*\'()\\.&=+$%-]+: )?[\\w_!~*\'()\\.&=+$%-]+@)?' //ftp的user@  可有可无
+            + '(([0-9]{1,3}\\.){3}[0-9]{1,3}' // IP形式的URL- 3位数字.3位数字.3位数字.3位数字
+            + '|' // 允许IP和DOMAIN（域名）
+            + '(localhost)|'	//匹配localhost
+            + '([\\w_!~*\'()-]+\\.)*' // 域名- 至少一个[英文或数字_!~*\'()-]加上.
+            + '\\w+\\.' // 一级域名 -英文或数字  加上.
+            + '[a-zA-Z]{1,6})' // 顶级域名- 1-6位英文
+            + '(:[0-9]{1,5})?' // 端口- :80 ,1-5位数字
+            + '((/?)|' // url无参数结尾 - 斜杆或这没有
+            + '(/[\\w_!~*\'()\\.;?:@&=+$,%#-]+)+/?)$';//请求参数结尾- 英文或数字和[]内的各种字符
+        var re = new RegExp(strRegex,'i');//i不区分大小写
+        //将url做uri转码后再匹配，解除请求参数中的中文和空字符影响
+        if (re.test(encodeURI(url))) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
 	
      function show (event) {
         //取消冒泡

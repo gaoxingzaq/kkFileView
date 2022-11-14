@@ -47,10 +47,10 @@ QQ群:816703453
 1. 支持 eml,svg
 1. 支持 obj,3ds,stl,ply,off,3dm,fbx,dae,wrl,3mf,ifc,glb,o3dv,gltf,stp,bim,fcstd,step,iges,brep
 1. 支持 psd,ai
-1. 支持 OFD 来源于 https://gitee.com/Donal/ofd.js  (浏览器版本 目前收费了免费 有水印和时间限制) 开源协议Apache-2.0
 1. 支持 OFD 来源于 https://gitee.com/cnofd/ofdview (浏览器版本) 开源协议Apache-2.0
 1. 支持 OFD 转换 来源于 https://gitee.com/ofdrw/ofdrw  开源协议Apache-2.0
 1. 支持 压缩包 来源于 https://github.com/borisbrodski/sevenzipjbinding 开源协议LGPL-2.1 
+1. 支持 3D 来源于 https://github.com/kovacsv/Online3DViewer  开源协议MIT 
 1. 使用 spring-boot 开发，预览服务搭建部署非常简便
 1. rest 接口提供服务，跨语言、跨平台特性(java,php,python,go,php，....)都支持，应用接入简单方便
 1. 抽象预览服务接口，方便二次开发，非常方便添加其他类型文件预览支持
@@ -61,11 +61,15 @@ QQ群:816703453
 地址：[https://kkfileview.keking.cn](https://kkfileview.keking.cn)
 
 ### 历史更新记录  
-2022年11月14日    
+2022年11月14日，v4.8.2版本发布:    
 1、优化程序接口为空的接入    
 2、OFD字体优化 (ofd.js)  
 3、优化代码  
 4、新增 mhtml格式支持 对mhtml格式优化  
+5、优化程序接口为空的接入    
+6、OFD字体优化 (ofd.js)  
+7、优化代码  
+8、新增 mhtml格式支持 对mhtml格式优化  
 
 2022年11月11日，v4.8.1版本发布:    
 1、针对服务支持TRACE请求修复,可在配置文件控制    

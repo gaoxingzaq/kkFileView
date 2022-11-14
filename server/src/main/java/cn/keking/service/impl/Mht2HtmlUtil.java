@@ -43,7 +43,7 @@ public class Mht2HtmlUtil {
                 File parent = null;
                 if (mp.getCount() > 1) {
                     String sourcePath = destHtml.substring(0, destHtml.lastIndexOf("."));
-                    parent = new File(new File(sourcePath).getAbsolutePath()+ "mht");
+                    parent = new File(new File(sourcePath).getAbsolutePath());
                     parent.mkdirs();
                     if (!parent.exists()) { // 创建文件夹失败的话则退出
                         return false;
