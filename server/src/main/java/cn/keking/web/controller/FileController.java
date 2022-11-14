@@ -45,6 +45,7 @@ public class FileController {
         //判断是否为IE浏览器的文件名，IE浏览器下文件名会带有盘符信息
 
         // escaping dangerous characters to prevent XSS
+        assert fileName != null;
         fileName = HtmlUtils.htmlEscape(fileName, StandardCharsets.UTF_8.name());
         String regEx = "[`\\[\\]~@#%^&*()|{}:;\\\\<>/?！…（）—【】‘；：”“’。，、？']";
         fileName = Pattern.compile(regEx).matcher(fileName).replaceAll("").trim();
