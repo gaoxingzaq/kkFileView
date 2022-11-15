@@ -102,9 +102,7 @@ public class OfficeFilePreviewImpl implements FilePreview {
                     return XLSX_FILE_PREVIEW_PAGE;
                 }
             }
-
         }
-
         if (pdfgx || !fileHandlerService.listConvertedFiles().containsKey(pdfName) || !ConfigConstants.isCacheEnabled()) {
             String filePath;
             ReturnResponse<String> response = DownloadUtils.downLoad(fileAttribute, null);
@@ -132,7 +130,6 @@ public class OfficeFilePreviewImpl implements FilePreview {
                             return otherFilePreview.notSupportedFile(model, fileAttribute, "文件错误或者其他，尝试其他文件");
                         }
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -203,7 +200,7 @@ public class OfficeFilePreviewImpl implements FilePreview {
                          model.addAttribute("textData", Base64.encodeBase64String(fileData.getBytes()));
                          return TXT_FILE_PREVIEW_PAGE;
                      }else {
-                         if( ConfigConstants.getofficedel().equalsIgnoreCase("false")){  //是否保留OFFICE源文件
+                         if(ConfigConstants.getofficedel().equalsIgnoreCase("false")){  //是否保留OFFICE源文件
                              KkFileUtils.deleteFileByPath(filePath);
                          }
                          return otherFilePreview.notSupportedFile(model, fileAttribute, "文件错误或者其他类型,"+ geshi );
