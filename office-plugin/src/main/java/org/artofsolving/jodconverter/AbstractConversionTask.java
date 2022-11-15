@@ -87,18 +87,18 @@ public abstract class AbstractConversionTask implements OfficeTask {
             document = loader.loadComponentFromURL(toUrl(inputFile), "_blank", 0, toUnoProperties(loadProperties));
         //    System.out.print(document);
         } catch (IllegalArgumentException illegalArgumentException) {
-            System.out.print("转换失败: "  + inputFile.getName() + illegalArgumentException);
-          //  throw new OfficeException("could not load document: " + inputFile.getName(), illegalArgumentException);
+          //  System.out.print("转换失败: "  + inputFile.getName() + illegalArgumentException);
+            throw new OfficeException("could not load document: " + inputFile.getName(), illegalArgumentException);
         } catch (ErrorCodeIOException errorCodeIOException) {
-            System.out.print("转换失败: "  + inputFile.getName() + "; errorCode: " + errorCodeIOException.ErrCode + errorCodeIOException);
-         //   throw new OfficeException("could not load document: "  + inputFile.getName() + "; errorCode: " + errorCodeIOException.ErrCode, errorCodeIOException);
+           // System.out.print("转换失败: "  + inputFile.getName() + "; errorCode: " + errorCodeIOException.ErrCode + errorCodeIOException);
+            throw new OfficeException("could not load document: "  + inputFile.getName() + "; errorCode: " + errorCodeIOException.ErrCode, errorCodeIOException);
         } catch (IOException ioException) {
-            System.out.print("转换失败: "  + inputFile.getName() + ioException);
-          //  throw new OfficeException("could not load document: "  + inputFile.getName(), ioException);
+          //  System.out.print("转换失败: "  + inputFile.getName() + ioException);
+            throw new OfficeException("could not load document: "  + inputFile.getName(), ioException);
         }
         if (document == null) {
-            System.out.print("转换失败: "  + inputFile.getName());
-           // throw new OfficeException("could not load document: "  + inputFile.getName());
+           // System.out.print("转换失败: "  + inputFile.getName());
+            throw new OfficeException("could not load document: "  + inputFile.getName());
         }
         return document;
     }

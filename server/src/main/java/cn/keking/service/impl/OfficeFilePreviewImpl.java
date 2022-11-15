@@ -140,7 +140,6 @@ public class OfficeFilePreviewImpl implements FilePreview {
              if (StringUtils.hasText(outFilePath)) {
                  String geshi =FileHandlerService.geshi(filePath,0);// 获取文件头信息
                      if (geshi.equals(".2003office") || geshi.equals(".2010offcie")  || geshi.equals(".QT") || geshi.equals(".rtf") || geshi.equals(".xmln") || suffix.equalsIgnoreCase("wmf") || suffix.equalsIgnoreCase("emf") ){  //判断是什么格式的文件
-                         KkFileUtils.deleteFileByPath(outFilePath);
                          File file = new File(outFilePath);
                          if(pdfgx){
                              FileHandlerService.AT_CONVERT_MAP.remove(file.getName(), 1);
@@ -151,25 +150,37 @@ public class OfficeFilePreviewImpl implements FilePreview {
                                  return otherFilePreview.notSupportedFile(model, fileAttribute, "文件["+fileNamee+"]正在转换中,请稍后刷新访问");
                              }else {
                                  if (OfficeUtils.isPwdProtected(filePath) && !StringUtils.hasLength(filePassword)) {
+                                     FileHandlerService.AT_CONVERT_MAP.remove(file.getName(), 1);
                                      model.addAttribute("pdfUrl", url);
                                      return  Jimi_FILE_PAGE;   //是加密文件 密码为空 输出密码框
                                  }else {
                                      try {
                                          officeToPdfService.openOfficeToPDF(filePath, outFilePath, fileAttribute); //转换
                                      } catch (Exception e) {
-                                         return otherFilePreview.notSupportedFile(model, fileAttribute, "抱歉，该文件版本不兼容，文件版本错误。");
+                                         if (OfficeUtils.isCompatible(filePath, filePassword) == false) {
+                                             FileHandlerService.AT_CONVERT_MAP.remove(file.getName(), 1);
+                                             model.addAttribute("pdfUrl", url);
+                                             return  Jimi_FILE_PAGE;   //是加密文件 密码为空 输出密码框
+                                         }
+                                         return otherFilePreview.notSupportedFile(model, fileAttribute, "抱歉，该文件版本不兼容，文件版本错误1。");
                                      }
                                  }
                              }
                          }else {
                              if (OfficeUtils.isPwdProtected(filePath) && !StringUtils.hasLength(filePassword)) {
+                                 FileHandlerService.AT_CONVERT_MAP.remove(file.getName(), 1);
                                  model.addAttribute("pdfUrl", url);
                                  return  Jimi_FILE_PAGE;   //是加密文件 密码为空 输出密码框
                              }else {
                                  try {
                                      officeToPdfService.openOfficeToPDF(filePath, outFilePath, fileAttribute); //转换
                                  } catch (Exception e) {
-                                     return otherFilePreview.notSupportedFile(model, fileAttribute, "抱歉，该文件版本不兼容，文件版本错误。");
+                                     if (OfficeUtils.isCompatible(filePath, filePassword) == false) {
+                                         FileHandlerService.AT_CONVERT_MAP.remove(file.getName(), 1);
+                                         model.addAttribute("pdfUrl", url);
+                                         return  Jimi_FILE_PAGE;   //是加密文件 密码为空 输出密码框
+                                     }
+                                     return otherFilePreview.notSupportedFile(model, fileAttribute, "抱歉，该文件版本不兼容，文件版本错误2。");
                                  }
                              }
                          }
