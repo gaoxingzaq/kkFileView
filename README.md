@@ -61,7 +61,7 @@ QQ群:816703453
 地址：[https://kkfileview.keking.cn](https://kkfileview.keking.cn)
 
 ### 历史更新记录  
-2022年11月14日，v4.8.1版本发布:    
+2022年11月14日，v4.8.2版本发布:    
 1、首页预览增加是否合法url判断    
 2、Linux环境下默认安装LibreOffice7.3, 检测Office组件新增LibreOffice 7.5 - 8.0版本    
 3、Linux下检测正在运行的office进程检测逻辑修正    
