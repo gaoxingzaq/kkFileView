@@ -102,14 +102,15 @@ function resetContent() {
 	}
 
 
-	$('.slide-img-container').append('<img src="' + slideUrls[curSlide - 1] + '" class="img-polaroid" style="height: 100%;">');
-	var thumbnailWidth = $('.thumbnail:first').width();
-	var thumbnailHeight = thumbnailWidth * ratio;
-	$('.thumbnail').height(thumbnailHeight);
+  $('.slide-img-container').append('<img src="' + slideUrls[curSlide - 1] + '" class="img-polaroid" style="height: 100%;">');
+    var thumbnailWidth = $('.thumbnail:first').width();
+    var thumbnailHeight = thumbnailWidth * ratio;
+    $('.thumbnail').height(thumbnailHeight);
+    $('.thumbnail>img').width(thumbnailWidth).height(thumbnailHeight);
 
-	var slideImgContainerWidth = $('.slide-img-container:first').width();
-	var slideImgContainerHeight = slideImgContainerWidth * ratio;
-	$('.slide-img-container').height(slideImgContainerHeight);
+    var slideImgContainerWidth = $('.slide-img-container:first').width();
+    var slideImgContainerHeight = slideImgContainerWidth * ratio;
+    $('.slide-img-container').height(slideImgContainerHeight);
 
 	resetImgSize();
 
