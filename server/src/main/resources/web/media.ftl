@@ -35,19 +35,22 @@
 				padding: 50px;
 				display: none;
 			}
-		</style>
-	</head>
-	<body>
-		<div class="video" 
-		style="width: 100%; 
-		height: 500px;
-		max-width: 800px;  
+     .video{
+		width: 100%; 
+		height: 600px;
+		max-width: 900px;  
 		margin: auto;
+         position: absolute;
         top: 0;
        left: 0;
        bottom: 0;
        right: 0;
-     background-color: green;">播放容器</div>
+     background-color: green;
+			}
+		</style>
+	</head>
+	<body>
+	<div class="video">播放容器</div>
 				<script>
 	var videoObject = {
 				container: '.video', //视频容器

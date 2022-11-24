@@ -49,7 +49,7 @@
     </#list>
 </div>
 <script>
- function deleteFile(fileName) {
+ function openFile(fileName) {
  window.open('${baseUrl}onlinePreview?url='+encodeURIComponent(Base64.encode(fileName))+"&watermarkTxt=${watermarkTxt}");
     }
 		  		 /*初始化水印*/
