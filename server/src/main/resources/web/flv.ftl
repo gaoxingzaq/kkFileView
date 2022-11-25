@@ -25,15 +25,15 @@
 				line-height: 38px;
 				box-sizing:border-box;
 				-moz-box-sizing:border-box; /* Firefox */
-				-webkit-box-sizing:border-box; /* Safari */	
+				-webkit-box-sizing:border-box; /* Safari */
 				padding: 50px;
 				display: none;
 			}
 		</style>
 	</head>
 	<body>
-		<div class="video" 
-		style="width: 100%; 
+		<div class="video"
+		style="width: 100%;
 		height: 500px;
 		max-width: 800px;  
 		margin: auto;
@@ -66,6 +66,7 @@
 			}
 		],
 		ad:{//定义广告
+			<#if "${mediagg}" != ''>
 					pause:{//配置暂停广告
 						close:true,//暂停广告是否显示关闭按钮
 						list:[//暂停广告列表
@@ -76,6 +77,7 @@
 							}
 						]
 					}
+			</#if>
 				},
 		video:'${mediaUrl}'//视频地址
 			};
@@ -87,7 +89,7 @@
  initWaterMark();
 }
 		</script>
-	
+
 		<div class="adpause">${mediagg}</div>
 	</body>
 </html>
