@@ -17,7 +17,6 @@ import jodd.io.NetUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -28,6 +27,7 @@ import org.springframework.web.util.HtmlUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -58,8 +58,6 @@ public class OnlinePreviewController {
         this.cacheService = cacheService;
         this.otherFilePreview = otherFilePreview;
     }
-    @Value("${pdfpagee:0}")
-    private String pdfpagee;
     @GetMapping( "/onlinePrevieww")
     public String onlinePrevieww(String url,String highlightAll, String page, Model model, HttpServletRequest req) {
         String ip = jilvip(req);  //获取IP地址
@@ -188,24 +186,20 @@ public class OnlinePreviewController {
             return otherFilePreview.notSupportedFile(model, "NULL地址不允许预览：");
         }
         HttpURLConnection urlcon;
-        boolean xieyi ;
-        if(urlPath.toLowerCase().startsWith("ftp:")) {
-            xieyi= false;
-        }else {
-            xieyi= true;
-        }
+        InputStream inputStream = null;
         if(!ConfigConstants.getlocalpreview().equalsIgnoreCase("false")) {
             if(urlPath.toLowerCase().startsWith("file:") || urlPath.toLowerCase().startsWith("file%3")) {
                 return otherFilePreview.notSupportedFile(model, "不支持本地协议：" + urlPath);
             }
         }
+
             urlPath = urlPath.replace("%20", " ");
             urlPath = urlPath.replace("?pdfXianzhi="+ConfigConstants.getpdfXianzhi(),"");
             try {
                 urlPath = URLDecoder.decode(urlPath, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-            } if(xieyi){
+            } if(!urlPath.toLowerCase().startsWith("ftp:") && !urlPath.toLowerCase().startsWith("file:") ){
                 try {
                     URL url = WebUtils.normalizedURL(urlPath);
                     urlcon=(HttpURLConnection)url.openConnection();
@@ -213,11 +207,9 @@ public class OnlinePreviewController {
                     urlcon.setReadTimeout(30000);
                     urlcon.setInstanceFollowRedirects(false);
                     if(urlcon.getResponseCode() ==302 ||urlcon.getResponseCode() ==301){
+                        urlcon.disconnect();
                         url =new URL(urlcon.getHeaderField("Location"));
                         urlcon=(HttpURLConnection)url.openConnection();
-                        urlcon.setConnectTimeout(30000);
-                        urlcon.setReadTimeout(30000);
-                        urlcon.setInstanceFollowRedirects(false);
                         //  System.out.println(urlcon.getResponseCode());
                     }
                     if(urlcon.getResponseCode() ==404 ||urlcon.getResponseCode() ==403 ||urlcon.getResponseCode() ==500 ){
@@ -227,12 +219,15 @@ public class OnlinePreviewController {
                         if(urlPath.contains( ".svg")) {
                             response.setContentType("image/svg+xml");
                         }
-                        byte[] bytes = NetUtil.downloadBytes(url.toString());
-                        IOUtils.write(bytes, response.getOutputStream());
+                        inputStream=(url).openStream();
+                        IOUtils.copy(inputStream, response.getOutputStream());
+                        urlcon.disconnect();
                     }
                 } catch (IOException | GalimatiasParseException e) {
                     logger.error("读取跨域文件异常，url：{}", urlPath);
                     return otherFilePreview.notSupportedFile(model, "文件有问题：" + urlPath);
+                }finally {
+                    IOUtils.closeQuietly(inputStream);
                 }
             }else {
                 try {
@@ -240,11 +235,13 @@ public class OnlinePreviewController {
                     if(urlPath.contains( ".svg")) {
                         response.setContentType("image/svg+xml");
                     }
-                    byte[] bytes = NetUtil.downloadBytes(url.toString());
-                    IOUtils.write(bytes, response.getOutputStream());
+                    inputStream=(url).openStream();
+                    IOUtils.copy(inputStream, response.getOutputStream());
                 } catch (IOException | GalimatiasParseException e) {
                     logger.error("读取跨域文件异常，url：{}", urlPath);
                     return otherFilePreview.notSupportedFile(model, "文件有问题：" + urlPath);
+                }finally {
+                    IOUtils.closeQuietly(inputStream);
                 }
             }
         return null;
@@ -265,7 +262,7 @@ public class OnlinePreviewController {
             urlPath ="file:///"+  FILE_DIR + urlPath;
         }
         String page = null;
-        if(pdfpagee.equalsIgnoreCase("0")){
+        if(ConfigConstants.getpdfpagee().equalsIgnoreCase("0")){
             try {
                 page = urlPath.substring(urlPath.lastIndexOf("=") + 1);
             } catch (Exception e) {
@@ -292,12 +289,12 @@ public class OnlinePreviewController {
                 // 截取开始页
                 //截取pdf部分页，格式"2-5" 第2页到第5页 页码超出范围（10页，你选择"15-20"）只会读最后一页
                 int start;
-                if(pdfpagee.equalsIgnoreCase("0")){
+                if(ConfigConstants.getpdfpagee().equalsIgnoreCase("0")){
                     start = Integer.parseInt(page.substring(0, 1));
                     reader.selectPages(page);
                 }else {
-                    start = Integer.parseInt(pdfpagee.substring(0, 1));
-                    reader.selectPages(pdfpagee);
+                    start = Integer.parseInt(ConfigConstants.getpdfpagee().substring(0, 1));
+                    reader.selectPages(ConfigConstants.getpdfpagee());
                 }
                 //源码没怎么看懂，但是需要内存中存放文件流，所以用了HttpServletResponse
                 PdfStamper stamp = new PdfStamper(reader, response.getOutputStream());

@@ -50,6 +50,7 @@ public class ConfigConstants {
     private static String localpreview;
     private static String previewindex;
     private static String pdffy;
+    private static String pdfpagee;
 
     public static final String DEFAULT_CACHE_ENABLED = "true";
     public static final String DEFAULT_TXT_TYPE = "txt,xml,json,properties,md,gitignore,log,m,bas,prg";
@@ -65,6 +66,7 @@ public class ConfigConstants {
     public static final String DEFAULT_PDF_DOWNLOAD_DISABLE = "true";
     public static final String DEFAULT_pdfXianzhi_DISABLE = "true";
     public static final String DEFAULT_BeiAn_DISABLE = "无";
+    public static final String DEFAULT_pdfpagee_DISABLE = "0";
     public static final String DEFAULT_mediagg_DISABLE = "高雄修改";
     public static final String DEFAULT_FILE_UPLOAD_DISABLE = "false";
     public static final String DEFAULT_TIF_PREVIEW_TYPE = "tif";
@@ -267,6 +269,18 @@ public class ConfigConstants {
     public static void setPdfDownloadDisableValue(String pdfDownloadDisable) {
         ConfigConstants.pdfDownloadDisable = pdfDownloadDisable;
     }
+
+    public static String getpdfpagee() {
+        return pdfpagee;
+    }
+    @Value("${pdfpagee:0}")
+    public void setpdfpagee(String pdfpagee) {
+        setpdfpageeValue(pdfpagee);
+    }
+    public static void setpdfpageeValue(String pdfpagee) {
+        ConfigConstants.pdfpagee = pdfpagee;
+    }
+
 
     public static String getBeiAn() {
         return BeiAn;

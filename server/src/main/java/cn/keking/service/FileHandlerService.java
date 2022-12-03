@@ -20,7 +20,6 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.tools.imageio.ImageIOUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -30,7 +29,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,11 +43,8 @@ public class FileHandlerService {
 
     private final Logger logger = LoggerFactory.getLogger(FileHandlerService.class);
 
-    private static final String DEFAULT_CONVERTER_CHARSET = System.getProperty("sun.jnu.encoding");
     private final String fileDir = ConfigConstants.getFileDir();
     private final CacheService cacheService;
-    @Value("${server.tomcat.uri-encoding:UTF-8}")
-    private String uriEncoding;
     private static final String FILE_DIR = ConfigConstants.getFileDir();
     public FileHandlerService(CacheService cacheService) {
         this.cacheService = cacheService;
@@ -177,11 +172,9 @@ public class FileHandlerService {
      *
      */
     public static int pdfpage(String pdfName) {
-        pdfName = pdfName.replace("%20", " ");
-        File file = new File(FILE_DIR+pdfName);
         PdfReader pdfReader = null;
         try {
-            pdfReader = new PdfReader(new FileInputStream(file)); //获取PDF页数 如果小于等于1就不进行分割
+            pdfReader = new PdfReader(new FileInputStream(pdfName)); //获取PDF页数 如果小于等于1就不进行分割
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -331,8 +324,7 @@ public class FileHandlerService {
      * 图片访问集合
      */
 
-    @Value("${pdfpagee:0}")
-    private String pdfpagee;
+
     public List<String> pdf2jpg(String pdfFilePath, String pdfName, String baseUrl, FileAttribute fileAttribute) {
         String gengxin=fileAttribute.getgengxin();
         List<String> imageUrls = new ArrayList<>();
@@ -343,7 +335,7 @@ public class FileHandlerService {
         if(StringUtil.isNotBlank(gengxin) && "ok".equalsIgnoreCase(gengxin)) {  //去缓存更新
             imageCount = Integer.valueOf("0");
         }else {
-            if(ConfigConstants.getpdffy().equalsIgnoreCase("false") ||pdfpagee.equalsIgnoreCase("0") ){    //是否开启分片功能
+            if(ConfigConstants.getpdffy().equalsIgnoreCase("false") ||ConfigConstants.getpdfpagee().equalsIgnoreCase("0") ){    //是否开启分片功能
                 imageCount = this.getConvertedPdfImage(pdfFilePath);
             }else {
                 imageCount = this.getConvertedPdfImage(FILE_DIR+"ls"+pdfName);
@@ -353,7 +345,7 @@ public class FileHandlerService {
         if(ConfigConstants.getpdffy().equalsIgnoreCase("false")){    //是否开启分片功能
             urlPrefix = baseUrl + pdfFolder;   //不改变路径
         }else {
-            if(pdfpagee.equalsIgnoreCase("0") || pdfpage(pdfName)<=1){
+            if(ConfigConstants.getpdfpagee().equalsIgnoreCase("0") || pdfpage(pdfFilePath)<=1){
                 urlPrefix = baseUrl + pdfFolder;   //不改变路径
             }else {
                 if (imageCount != null && imageCount > 0) {

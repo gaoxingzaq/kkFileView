@@ -45,8 +45,6 @@ public class OfficeFilePreviewImpl implements FilePreview {
     private String officexh;
     @Value("${pdfsize:10}")
     private int pdfsize;
-    @Value("${pdfpagee:0}")
-    private String pdfpagee;
     @Override
     public String filePreviewHandle(String url, Model model, FileAttribute fileAttribute) {
         // 预览Type，参数传了就取参数的，没传取系统默认
@@ -237,10 +235,10 @@ public class OfficeFilePreviewImpl implements FilePreview {
 
         }else {
 
-          if(FileHandlerService.pdfpage(pdfName) <=1){  //判断PDF文件页码 当小于等于1就不进行分割
+          if(FileHandlerService.pdfpage(outFilePath) <=1){  //判断PDF文件页码 当小于等于1就不进行分割
               pdfName= FileHandlerService.zhuanyii(pdfName); //文件名转义
           }else {
-              double pdfdx = FileHandlerService.getDirSize(new File(FILE_DIR + pdfName)); //判断PDF文件大小 大于设定值就分页
+              double pdfdx = FileHandlerService.getDirSize(new File(outFilePath)); //判断PDF文件大小 大于设定值就分页
               BigDecimal data = new BigDecimal(pdfdx);  //判断文件大小
               pdfName= FileHandlerService.zhuanyii(pdfName);  //文件名转义
               if (data.compareTo(data) < pdfsize) {
@@ -253,13 +251,13 @@ public class OfficeFilePreviewImpl implements FilePreview {
              //    } catch (DocumentException e) {
                //      e.printStackTrace();
               //    }
-                  model.addAttribute("fenye",FileHandlerService.pdfpage(pdfName));
-                  model.addAttribute("pdfpagee",pdfpagee);
+                  model.addAttribute("fenye",FileHandlerService.pdfpage(outFilePath));
+                  model.addAttribute("pdfpagee",ConfigConstants.getpdfpagee());
                   pdfName ="download?urlPath="+pdfName;
                   model.addAttribute("pdfUrl", pdfName);
                   return  FYPDF_FILE_PREVIEW_PAGE;
               }else {
-                  pdfName ="download?urlPath="+pdfName+"?page="+pdfpagee;   //分割PDF文件
+                  pdfName ="download?urlPath="+pdfName+"?page="+ConfigConstants.getpdfpagee();   //分割PDF文件
               }
           }
         }

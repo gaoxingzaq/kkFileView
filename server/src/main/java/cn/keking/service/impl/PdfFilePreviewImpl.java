@@ -8,7 +8,6 @@ import cn.keking.service.FilePreview;
 import cn.keking.utils.DownloadUtils;
 import cn.keking.web.filter.BaseUrlFilter;
 import jodd.util.StringUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -31,8 +30,7 @@ public class PdfFilePreviewImpl implements FilePreview {
         this.fileHandlerService = fileHandlerService;
         this.otherFilePreview = otherFilePreview;
     }
-    @Value("${pdfpagee:0}")
-    private String pdfpagee;
+
     @Override
     public String filePreviewHandle(String url, Model model, FileAttribute fileAttribute) {
         String gengxin=fileAttribute.getgengxin();
@@ -45,6 +43,7 @@ public class PdfFilePreviewImpl implements FilePreview {
         String outFilePath = FILE_DIR + pdfName;
         String  host = FileHandlerService.hqurl(url);
         boolean bendi = FileHandlerService.kuayu(host, baseUrl); //判断是否是本地URL 是本地的启用分页功能 不是就直接在跨域输出
+
         if (OfficeFilePreviewImpl.OFFICE_PREVIEW_TYPE_IMAGE.equals(officePreviewType) || OfficeFilePreviewImpl.OFFICE_PREVIEW_TYPE_ALL_IMAGES.equals(officePreviewType)) {
             boolean pdfgx ;
             if(StringUtil.isNotBlank(gengxin) && "ok".equalsIgnoreCase(gengxin)) { //去缓存更新
@@ -53,9 +52,10 @@ public class PdfFilePreviewImpl implements FilePreview {
                 pdfgx= false;
             }
             //当文件不存在时，就去下载
+         //   System.out.println(8989);
             if (pdfgx ||!fileHandlerService.listConvertedFiles().containsKey(pdfName) || !ConfigConstants.isCacheEnabled()) {
                 if(!bendi){
-                    ReturnResponse<String> response = DownloadUtils.downLoad(fileAttribute, fileName);
+                    ReturnResponse<String> response = DownloadUtils.downLoad(fileAttribute, pdfName);
                 if (response.isFailure()) {
                     return otherFilePreview.notSupportedFile(model, fileAttribute, response.getMsg());
                 }
@@ -87,27 +87,26 @@ public class PdfFilePreviewImpl implements FilePreview {
             }else {
                 outFilePath = FILE_DIR +url.replace(baseUrl, "");  //本地URL 不下载去掉ULR 组合成本地路径
             }
-
             List<String> imageUrls = fileHandlerService.pdf2jpg(outFilePath, pdfName, baseUrl,fileAttribute);
             if (imageUrls == null || imageUrls.size() < 1) {
                 return otherFilePreview.notSupportedFile(model, fileAttribute, "pdf转图片异常，请联系管理员");
             }
             model.addAttribute("imgurls", imageUrls);
             model.addAttribute("currentUrl", imageUrls.get(0));
-            if (OfficeFilePreviewImpl.OFFICE_PREVIEW_TYPE_IMAGE.equals(officePreviewType)) {
-                return OFFICE_PICTURE_FILE_PREVIEW_PAGE;
-            } else {
-                return PICTURE_FILE_PREVIEW_PAGE;
-            }
+
+            return OFFICE_PICTURE_FILE_PREVIEW_PAGE;
+
         } else {
 
             // 不是http开头，浏览器不能直接访问，需下载到本地
-            if (url != null && !url.toLowerCase().startsWith("http")) {
+            if (ConfigConstants.getpdffy().equalsIgnoreCase("true") || url != null && !url.toLowerCase().startsWith("http") ) {
                 if (!fileHandlerService.listConvertedFiles().containsKey(pdfName) || !ConfigConstants.isCacheEnabled()) {
+
                     ReturnResponse<String> response = DownloadUtils.downLoad(fileAttribute, pdfName);
                     if (response.isFailure()) {
                         return otherFilePreview.notSupportedFile(model, fileAttribute, response.getMsg());
                     }
+
                     outFilePath = response.getContent();
                     String geshi =FileHandlerService.geshi(outFilePath,1);// 获取文件头信息
                     if (geshi.equals(".pdf")){
@@ -118,19 +117,37 @@ public class PdfFilePreviewImpl implements FilePreview {
                     }else {
                         return otherFilePreview.notSupportedFile(model, fileAttribute, "文件错误或者其他类型,"+ geshi );
                     }
-
-                    model.addAttribute("pdfUrl", fileHandlerService.getRelativePath(response.getContent()));
                     if (ConfigConstants.isCacheEnabled()) {
                         // 加入缓存
                         fileHandlerService.addConvertedFile(pdfName, fileHandlerService.getRelativePath(outFilePath));
                     }
+                    pdfName= FileHandlerService.zhuanyii(pdfName);
+                    if( ConfigConstants.getpdffy().equalsIgnoreCase("false")){
+                        model.addAttribute("pdfUrl", fileHandlerService.getRelativePath(response.getContent()));
+                    }else {
+                        pdfName= FileHandlerService.zhuanyii(pdfName); //文件名转义
+                        pdfName ="download?urlPath="+pdfName+"&"+FileHandlerService.pdfpage(outFilePath);
+                        model.addAttribute("pdfpagee",ConfigConstants.getpdfpagee());
+                        model.addAttribute("fenye",FileHandlerService.pdfpage(outFilePath));
+                        model.addAttribute("pdfUrl",pdfName);
+                        return FYPDF_FILE_PREVIEW_PAGE;
+                    }
+
                 } else {
                     pdfName= FileHandlerService.zhuanyii(pdfName);
                     if( ConfigConstants.getpdffy().equalsIgnoreCase("false")){
 
                     }else {
                         pdfName= FileHandlerService.zhuanyii(pdfName); //文件名转义
-                        pdfName ="download?urlPath="+pdfName+"&"+FileHandlerService.pdfpage(pdfName);
+                        if(!bendi){
+                            pdfName ="download?urlPath="+pdfName+"&"+FileHandlerService.pdfpage(outFilePath);
+                        }else {
+                            outFilePath = FILE_DIR +url.replace(baseUrl, "");  //本地URL 不下载去掉ULR 组合成本地路径
+                            pdfName ="download?urlPath="+url.replace(baseUrl, "")+"&"+FileHandlerService.pdfpage(outFilePath);
+                        }
+                      //  System.out.println(pdfName);
+                        model.addAttribute("fenye",FileHandlerService.pdfpage(outFilePath));
+                        model.addAttribute("pdfpagee",ConfigConstants.getpdfpagee());
                         model.addAttribute("pdfUrl",pdfName);
                         return FYPDF_FILE_PREVIEW_PAGE;
                     }
@@ -182,8 +199,8 @@ public class PdfFilePreviewImpl implements FilePreview {
                         String geshi =FileHandlerService.geshi(outFilePath,1);// 获取文件头信息
                         if (geshi.equals(".pdf")){
                             pdfName = url.replace(baseUrl, "");
-                            model.addAttribute("fenye",FileHandlerService.pdfpage(pdfName));
-                            model.addAttribute("pdfpagee",pdfpagee);
+                            model.addAttribute("fenye",FileHandlerService.pdfpage(outFilePath));
+                            model.addAttribute("pdfpagee",ConfigConstants.getpdfpagee());
                             pdfName ="download?urlPath="+pdfName;
                             model.addAttribute("pdfUrl",pdfName);
                             return FYPDF_FILE_PREVIEW_PAGE;
