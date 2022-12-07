@@ -52,6 +52,16 @@ public class DownloadUtils {
         ReturnResponse<String> response = new ReturnResponse<>(0, "下载成功!!!", "");
         ReturnResponse<String> xiazai = new ReturnResponse<>(0, "下载失败!!!", "");
         String realPath = DownloadUtils.getRelFilePath(fileName, fileAttribute);
+        String  prohibit=  ConfigConstants.getprohibit();
+        String[] simTextArr = prohibit.split(",");
+        for (int ii = 0; ii < simTextArr.length; ii++) {
+            if (realPath.toLowerCase().contains(simTextArr[ii])){
+                System.out.println("该类型文件不允许下载");
+                xiazai.setCode(1);
+                xiazai.setContent(null);
+                return xiazai;
+            }
+        }
         HttpURLConnection urlcon = null;
         try {
             URL url = WebUtils.normalizedURL(urlStr);

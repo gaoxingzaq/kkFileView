@@ -14,8 +14,6 @@
             <outputDirectory>${file.separator}bin</outputDirectory>
             <includes>
                 <include>*.sh</include>
-				<include>*.md</include>
-                <include>*.docx</include>
             </includes>
             <fileMode>755</fileMode>
             <lineEnding>unix</lineEnding>

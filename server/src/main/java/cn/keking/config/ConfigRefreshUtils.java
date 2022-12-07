@@ -30,6 +30,7 @@ public class ConfigRefreshUtils {
         String BeiAn;
         String pdfpagee;
         String mediagg;
+        String prohibit;
         boolean fileUploadDisable;
         String tifPreviewType;
         String ofdPreviewType;
@@ -59,6 +60,7 @@ public class ConfigRefreshUtils {
         BeiAn = properties.getProperty("BeiAn", ConfigConstants.DEFAULT_BeiAn_DISABLE);
         pdfpagee = properties.getProperty("pdfpagee", ConfigConstants.DEFAULT_pdfpagee_DISABLE);
         mediagg = properties.getProperty("gg.media", ConfigConstants.DEFAULT_mediagg_DISABLE);
+        prohibit = properties.getProperty("prohibit", ConfigConstants.DEFAULT_prohibit_DISABLE);
         fileUploadDisable = Boolean.parseBoolean(properties.getProperty("file.upload.disable", ConfigConstants.DEFAULT_FILE_UPLOAD_DISABLE));
         tifPreviewType = properties.getProperty("tif.preview.type", ConfigConstants.DEFAULT_TIF_PREVIEW_TYPE);
         ofdPreviewType = properties.getProperty("OFD.preview.type", ConfigConstants.DEFAULT_OFD_PREVIEW_TYPE);
@@ -86,6 +88,7 @@ public class ConfigRefreshUtils {
         ConfigConstants.setBeiAnValue(BeiAn);
         ConfigConstants.setpdfpageeValue(pdfpagee);
         ConfigConstants.setmediaggValue(mediagg);
+        ConfigConstants.setprohibitValue(prohibit);
         ConfigConstants.setFileUploadDisableValue(fileUploadDisable);
         ConfigConstants.setTifPreviewTypeValue(tifPreviewType);
         ConfigConstants.setOfdPreviewTypeValue(ofdPreviewType);

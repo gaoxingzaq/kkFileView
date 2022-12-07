@@ -65,8 +65,15 @@ public class FileController {
             fileType= fileName.substring(i+1);
             fileType= fileType.toLowerCase();
         }
-        if (fileType.length() == 0 || fileType.equalsIgnoreCase("exe") || fileType.equalsIgnoreCase("dll")){
+        if (fileType.length() == 0){
             return new ObjectMapper().writeValueAsString(ReturnResponse.failure(fileType+"不允许上传的类型"));
+        }
+        String  prohibit=  ConfigConstants.getprohibit();
+        String[] simTextArr = prohibit.split(",");
+        for (int ii = 0; ii < simTextArr.length; ii++) {
+            if (fileType.toLowerCase().contains(simTextArr[ii])){
+                return new ObjectMapper().writeValueAsString(ReturnResponse.failure(fileType+"不允许上传的类型"));
+            }
         }
         // 判断是否存在同名文件
         if (existsFile(fileName)) {
