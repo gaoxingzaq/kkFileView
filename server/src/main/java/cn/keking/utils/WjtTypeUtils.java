@@ -94,6 +94,8 @@ public class WjtTypeUtils {
                 return TYPE_2003office;
             }else if(type.contains("504B0304")){
                 return TYPE_2010offcie;
+            }else if(type.contains("53646A68")){
+                return TYPE_2010offcie;
             }else if(type.contains("D0F2BAC5")){
                 return TYPE_CSV;
             }else if(type.contains("7B5C7274")){
