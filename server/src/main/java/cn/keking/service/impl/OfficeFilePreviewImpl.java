@@ -157,7 +157,7 @@ public class OfficeFilePreviewImpl implements FilePreview {
                                              model.addAttribute("pdfUrl", url);
                                              return  Jimi_FILE_PAGE;   //是加密文件 密码为空 输出密码框
                                          }
-                                         return otherFilePreview.notSupportedFile(model, fileAttribute, "抱歉，该文件版本不兼容，文件版本错误1。");
+                                         return otherFilePreview.notSupportedFile(model, fileAttribute, "抱歉，该文件版本不兼容，文件版本错误。");
                                      }
                                  }
                              }

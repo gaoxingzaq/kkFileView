@@ -149,6 +149,7 @@ public class OnlinePreviewController {
         List<String> imgUrls = Arrays.asList(images);
         model.addAttribute("imgUrls", imgUrls);
         String currentUrl = req.getParameter("currentUrl");
+               currentUrl= HtmlUtils.htmlEscape(currentUrl);
         if (StringUtils.hasText(currentUrl)) {
             String decodedCurrentUrl = new String(Base64.decodeBase64(currentUrl));
             model.addAttribute("currentUrl", decodedCurrentUrl);

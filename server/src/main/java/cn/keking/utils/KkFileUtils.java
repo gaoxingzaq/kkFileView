@@ -4,9 +4,13 @@ import cn.keking.config.ConfigConstants;
 import cn.keking.service.FileHandlerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class KkFileUtils {
@@ -15,6 +19,44 @@ public class KkFileUtils {
 
     public static final String DEFAULT_FILE_ENCODING = "UTF-8";
     private static final String FILE_DIR = ConfigConstants.getFileDir();
+
+    private static final List<String> illegalFileStrList = new ArrayList<>();
+    static {
+        illegalFileStrList.add("../");
+        illegalFileStrList.add("./");
+        illegalFileStrList.add("..\\");
+        illegalFileStrList.add(".\\");
+        illegalFileStrList.add("\\..");
+        illegalFileStrList.add("\\.");
+        illegalFileStrList.add("..");
+        illegalFileStrList.add("...");
+    }
+    /**
+     * 检查文件名是否合规
+     * @param fileName 文件名
+     * @return 合规结果,true:不合规，false:合规
+     */
+    public static boolean isIllegalFileName(String fileName){
+        for (String str: illegalFileStrList){
+            if(fileName.contains(str)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 检查是否是数字
+     * @param str 文件名
+     * @return 合规结果,true:不合规，false:合规
+     */
+    public static boolean isInteger(String str) {
+        if(StringUtils.hasText(str)){
+            boolean strResult = str.matches("-?[0-9]+.?[0-9]*");
+            return strResult ;
+        }
+        return false;
+    }
     /**
      * 判断url是否是http资源
      *
@@ -61,7 +103,13 @@ public class KkFileUtils {
         }
     }
 
-
+    public static String htmlEscape(String input) {
+        if(StringUtils.hasText(input)){
+            input = input.replaceAll("\\{", "%7B").replaceAll("}", "%7D");
+            return HtmlUtils.htmlEscape(input);
+        }
+        return input;
+    }
 
     /**
      * 通过文件名获取文件后缀

@@ -165,6 +165,10 @@ public class DownloadUtils {
         } else { // 文件后缀不一致时，以type为准(针对simText【将类txt文件转为txt】)
             fileName = fileName.replace(fileName.substring(fileName.lastIndexOf(".") + 1), type);
         }
+        // 判断是否非法地址
+        if (KkFileUtils.isIllegalFileName(fileName)) {
+            return null;
+        }
         String realPath = fileDir + fileName;
         File dirFile = new File(fileDir);
         if (!dirFile.exists() && !dirFile.mkdirs()) {
