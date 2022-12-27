@@ -472,6 +472,7 @@ public class FileHandlerService {
                 e.printStackTrace();
             }
         }
+        fileName =  KkFileUtils.htmlEscape(fileName);  //文件名处理
         attribute.setType(type);
         attribute.setName(fileName);
         attribute.setSuffix(suffix);
