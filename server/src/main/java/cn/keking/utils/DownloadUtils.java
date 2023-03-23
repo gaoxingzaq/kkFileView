@@ -49,14 +49,15 @@ public class DownloadUtils {
         if(wjl){
             urlStr =  urlStr.substring(0,urlStr.lastIndexOf("&"));  //删除添加的文件流内容
         }
-        ReturnResponse<String> response = new ReturnResponse<>(0, "下载成功!!!", "");
-        ReturnResponse<String> xiazai = new ReturnResponse<>(0, "下载失败!!!", "");
+        ReturnResponse<String> response = new ReturnResponse<>(ReturnResponse.SUCCESS_CODE, "下载成功!!!", "");
+        ReturnResponse<String> xiazai = new ReturnResponse<>(ReturnResponse.FAILURE_CODE, "下载失败!!!", "");
         String realPath = DownloadUtils.getRelFilePath(fileName, fileAttribute);
         String  prohibit=  ConfigConstants.getprohibit();
         String[] simTextArr = prohibit.split(",");
         for (int ii = 0; ii < simTextArr.length; ii++) {
-            if (realPath.toLowerCase().contains(simTextArr[ii])){
-                System.out.println("该类型文件不允许下载");
+            String fileNameNow = realPath.substring(realPath.lastIndexOf(".")+1);
+            if (fileNameNow.toLowerCase().contains(simTextArr[ii])){
+                System.out.println(simTextArr[ii]);
                 xiazai.setCode(1);
                 xiazai.setContent(null);
                 return xiazai;
@@ -70,7 +71,8 @@ public class DownloadUtils {
                 urlcon.setConnectTimeout(30000);
                 urlcon.setReadTimeout(30000);
                 urlcon.setInstanceFollowRedirects(false);
-                //  System.out.println("返回码: " + urlcon.getResponseCode());
+                urlcon.setRequestProperty("Accept-Encoding", "identity");
+                urlcon.setRequestProperty("User-Agent", " Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36");
                 try {
                     if(urlcon.getResponseCode() ==404 ||urlcon.getResponseCode() ==403 ||urlcon.getResponseCode() ==500 ){
                         System.out.println("地址错误");

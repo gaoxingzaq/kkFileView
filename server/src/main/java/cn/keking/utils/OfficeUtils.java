@@ -6,7 +6,6 @@ import org.apache.poi.extractor.ExtractorFactory;
 import org.apache.poi.hssf.record.crypto.Biff8EncryptionKey;
 import org.springframework.lang.Nullable;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
