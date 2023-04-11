@@ -4,6 +4,7 @@ import cn.keking.config.ConfigConstants;
 import cn.keking.service.FileHandlerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
@@ -175,6 +176,21 @@ public class KkFileUtils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 判断文件是否允许上传
+     *
+     * @param file 文件扩展名
+     * @return 是否允许上传
+     */
+    public static boolean isAllowedUpload(String file) {
+        String fileType = suffixFromFileName(file);
+        for (String type : ConfigConstants.getprohibit()) {
+            if (type.equals(fileType))
+                return false;
+        }
+        return !ObjectUtils.isEmpty(fileType);
     }
 
 }

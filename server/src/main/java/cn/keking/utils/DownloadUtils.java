@@ -52,16 +52,11 @@ public class DownloadUtils {
         ReturnResponse<String> response = new ReturnResponse<>(ReturnResponse.SUCCESS_CODE, "下载成功!!!", "");
         ReturnResponse<String> xiazai = new ReturnResponse<>(ReturnResponse.FAILURE_CODE, "下载失败!!!", "");
         String realPath = DownloadUtils.getRelFilePath(fileName, fileAttribute);
-        String  prohibit=  ConfigConstants.getprohibit();
-        String[] simTextArr = prohibit.split(",");
-        for (int ii = 0; ii < simTextArr.length; ii++) {
-            String fileNameNow = realPath.substring(realPath.lastIndexOf(".")+1);
-            if (fileNameNow.toLowerCase().contains(simTextArr[ii])){
-                System.out.println(simTextArr[ii]);
-                xiazai.setCode(1);
-                xiazai.setContent(null);
-                return xiazai;
-            }
+        if (!KkFileUtils.isAllowedUpload(fileName)) {
+            response.setCode(1);
+            response.setContent(null);
+            response.setMsg("下载失败:不支持的类型!" + fileName);
+            return response;
         }
         HttpURLConnection urlcon = null;
         try {

@@ -1,6 +1,8 @@
 package cn.keking.web.controller;
 
 import cn.keking.config.ConfigConstants;
+import cn.keking.utils.KkFileUtils;
+import cn.keking.utils.WebUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -59,21 +61,11 @@ public class FileController {
         if (pos != -1)  {
             fileName = fileName.substring(pos + 1);
         }
-        String fileType= "";
-        int i = fileName.lastIndexOf('.');
-        if (i > 0) {
-            fileType= fileName.substring(i+1);
-            fileType= fileType.toLowerCase();
+        if(fileName.lastIndexOf(".")==-1){
+            return new ObjectMapper().writeValueAsString(ReturnResponse.failure(fileName+"不允许上传的类型"));
         }
-        if (fileType.length() == 0){
-            return new ObjectMapper().writeValueAsString(ReturnResponse.failure(fileType+"不允许上传的类型"));
-        }
-        String  prohibit=  ConfigConstants.getprohibit();
-        String[] simTextArr = prohibit.split(",");
-        for (int ii = 0; ii < simTextArr.length; ii++) {
-            if (fileType.toLowerCase().contains(simTextArr[ii])){
-                return new ObjectMapper().writeValueAsString(ReturnResponse.failure(fileType+"不允许上传的类型"));
-            }
+        if (!KkFileUtils.isAllowedUpload(fileName)) {
+            return new ObjectMapper().writeValueAsString(ReturnResponse.failure(fileName+"不允许上传的类型"));
         }
         // 判断是否存在同名文件
         if (existsFile(fileName)) {

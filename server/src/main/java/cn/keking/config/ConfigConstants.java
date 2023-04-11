@@ -38,7 +38,7 @@ public class ConfigConstants {
     private static String pdfXianzhi;
     private static String BeiAn;
     private static String mediagg;
-    private static String prohibit;
+    private static String[] prohibit= {};
     private static String pdfyeman;
     private static Boolean fileUploadDisable;
     private static String tifPreviewType;
@@ -316,18 +316,19 @@ public class ConfigConstants {
     public static void setmediaggValue(String mediagg) {
         ConfigConstants.mediagg = mediagg;
     }
-
-
-    public static String getprohibit() {
+    public static String[] getprohibit() {
         return prohibit;
     }
     @Value("${prohibit:exe,dll}")
     public void setprohibit(String prohibit) {
-        setprohibitValue(prohibit);
+        String[] prohibittArr = prohibit.split(",");
+        setprohibitValue(prohibittArr);
     }
-    public static void setprohibitValue(String prohibit) {
+
+    public static void setprohibitValue(String[] prohibit) {
         ConfigConstants.prohibit = prohibit;
     }
+
 
     public static String getOfficePreviewSwitchDisabled() {
         return officePreviewSwitchDisabled;
