@@ -37,6 +37,7 @@ public class DownloadUtils {
      * @return 本地文件绝对路径
      */
     public static ReturnResponse<String> downLoad(FileAttribute fileAttribute, String fileName) {
+        String fileNamee = fileAttribute.getName();
         try {
             SSLUtils.ignoreSsl();
         } catch (Exception e) {
@@ -52,7 +53,8 @@ public class DownloadUtils {
         ReturnResponse<String> response = new ReturnResponse<>(ReturnResponse.SUCCESS_CODE, "下载成功!!!", "");
         ReturnResponse<String> xiazai = new ReturnResponse<>(ReturnResponse.FAILURE_CODE, "下载失败!!!", "");
         String realPath = DownloadUtils.getRelFilePath(fileName, fileAttribute);
-        if (!KkFileUtils.isAllowedUpload(fileName)) {
+        System.out.println(fileNamee);
+        if (!KkFileUtils.isAllowedUpload(fileNamee)) {
             response.setCode(1);
             response.setContent(null);
             response.setMsg("下载失败:不支持的类型!" + fileName);

@@ -10,6 +10,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
+import cn.keking.web.controller.IndexController;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 
@@ -36,6 +38,9 @@ public class TrustHostFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String url = WebUtils.getSourceUrl(request);
+            if(IndexController.isBase64(url)){
+                url = WebUtils.decodeBase64String(url);
+            }
         String host = WebUtils.getHost(url);
         if (host != null &&!ConfigConstants.getTrustHostSet().isEmpty() && !ConfigConstants.getTrustHostSet().contains(host)) {
             String html = this.notTrustHost.replace("${current_host}", host);
