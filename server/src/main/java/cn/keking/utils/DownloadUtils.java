@@ -53,7 +53,6 @@ public class DownloadUtils {
         ReturnResponse<String> response = new ReturnResponse<>(ReturnResponse.SUCCESS_CODE, "下载成功!!!", "");
         ReturnResponse<String> xiazai = new ReturnResponse<>(ReturnResponse.FAILURE_CODE, "下载失败!!!", "");
         String realPath = DownloadUtils.getRelFilePath(fileName, fileAttribute);
-        System.out.println(fileNamee);
         if (!KkFileUtils.isAllowedUpload(fileNamee)) {
             response.setCode(1);
             response.setContent(null);
